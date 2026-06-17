@@ -1,0 +1,47 @@
+@page
+@model HospitalWeb.Pages.Rooms.CreateModel
+@{ ViewData["Title"] = "Add Room"; ViewData["Page"] = "Rooms"; }
+
+<div class="page-header">
+    <h2><i class="fa-solid fa-bed me-2"></i>Add New Room</h2>
+    <a href="/Rooms" class="btn btn-outline-secondary btn-sm">← Back</a>
+</div>
+
+<div class="card" style="max-width:560px">
+    <div class="card-body">
+        <form method="post">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label">Room Number *</label>
+                    <input asp-for="RoomNumber" class="form-control" />
+                    <span asp-validation-for="RoomNumber" class="text-danger"></span>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Room Type</label>
+                    <select asp-for="Type" asp-items="Html.GetEnumSelectList<HospitalWeb.Models.RoomType>()" class="form-select"></select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Capacity (beds)</label>
+                    <input asp-for="Capacity" type="number" min="1" class="form-control" />
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Daily Rate (UGX)</label>
+                    <input asp-for="DailyRate" type="number" min="50000" max="100000" class="form-control" placeholder="50000 – 100000" />
+                    <small class="text-muted">Must be between UGX 50,000 and UGX 100,000</small>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Floor *</label>
+                    <input asp-for="Floor" class="form-control" />
+                </div>
+                <div class="col-12">
+                    <label class="form-label">Ward Name *</label>
+                    <input asp-for="Ward" class="form-control" />
+                </div>
+            </div>
+            <div class="d-flex gap-2 mt-4">
+                <button type="submit" class="btn btn-primary">Add Room</button>
+                <a href="/Rooms" class="btn btn-outline-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>

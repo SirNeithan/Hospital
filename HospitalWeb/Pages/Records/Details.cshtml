@@ -1,0 +1,61 @@
+@page
+@model HospitalWeb.Pages.Records.DetailsModel
+@{ ViewData["Title"] = "Record Details"; ViewData["Page"] = "Records"; }
+
+@if (Model.Record == null) { <p>Record not found.</p> return; }
+@{ var r = Model.Record; }
+
+<div class="page-header">
+    <h2><i class="fa-solid fa-file-medical me-2"></i>Medical Record #@r.Id</h2>
+    <a href="/Records" class="btn btn-outline-secondary btn-sm">← Back</a>
+</div>
+
+<div class="row g-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header"><h5>Record Information</h5></div>
+            <div class="card-body">
+                <table class="table table-sm table-borderless mb-0">
+                    <tr><td class="text-muted">Date</td><td>@r.RecordDate.ToString("MMMM dd, yyyy HH:mm")</td></tr>
+                    <tr><td class="text-muted">Patient</td><td class="fw-semibold">@r.PatientName</td></tr>
+                    <tr><td class="text-muted">Doctor</td><td>@r.DoctorName</td></tr>
+                    @if (r.AppointmentId.HasValue)
+                    { <tr><td class="text-muted">Appointment</td><td>#@r.AppointmentId</td></tr> }
+                    <tr><td class="text-muted">Diagnosis</td><td class="fw-semibold">@r.Diagnosis</td></tr>
+                    <tr><td class="text-muted">Symptoms</td><td>@r.Symptoms</td></tr>
+                    <tr><td class="text-muted">Treatment</td><td>@r.TreatmentPlan</td></tr>
+                    @if (!string.IsNullOrEmpty(r.Allergies))
+                    { <tr><td class="text-muted">Allergies</td><td class="text-danger">@r.Allergies</td></tr> }
+                    @if (!string.IsNullOrEmpty(r.LabResults))
+                    { <tr><td class="text-muted">Lab Results</td><td>@r.LabResults</td></tr> }
+                    @if (!string.IsNullOrEmpty(r.Notes))
+                    { <tr><td class="text-muted">Notes</td><td>@r.Notes</td></tr> }
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header"><h5><i class="fa-solid fa-pills me-2"></i>Prescriptions (@r.Prescriptions.Count)</h5></div>
+            <div class="card-body">
+                @if (!r.Prescriptions.Any())
+                {
+                    <p class="text-muted">No prescriptions.</p>
+                }
+                else
+                {
+                    @foreach (var rx in r.Prescriptions)
+                    {
+                        <div class="prescription-item mb-2">
+                            <div class="fw-semibold">@rx.MedicineName <span class="text-muted">@rx.Dosage</span></div>
+                            <small>@rx.Frequency &mdash; @rx.DurationDays days</small>
+                            @if (!string.IsNullOrEmpty(rx.Instructions))
+                            { <br/><small class="text-muted">@rx.Instructions</small> }
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,66 @@
+@page
+@model HospitalWeb.Pages.Doctors.IndexModel
+@{ ViewData["Title"] = "Doctors"; ViewData["Page"] = "Doctors"; }
+
+<div class="page-header">
+    <h2><i class="fa-solid fa-user-doctor me-2"></i>Doctors</h2>
+    <a href="/Doctors/Create" class="btn btn-primary">+ Add Doctor</a>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <form method="get" class="d-flex gap-2" style="flex:1">
+            <input type="text" name="Search" value="@Model.Search" class="form-control" placeholder="Search by name or specialization…" style="max-width:320px" />
+            <button class="btn btn-outline-primary btn-sm">Search</button>
+            @if (!string.IsNullOrEmpty(Model.Search))
+            { <a href="/Doctors" class="btn btn-outline-secondary btn-sm">Clear</a> }
+        </form>
+        <small class="text-muted">@Model.Doctors.Count doctor(s)</small>
+    </div>
+    <div class="card-body p-0">
+        @if (!Model.Doctors.Any())
+        {
+            <div class="empty-state"><div class="empty-icon"><i class="fa-solid fa-user-doctor"></i></div><p>No doctors found</p></div>
+        }
+        else
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Doctor</th><th>Specialization</th>
+                        <th>Consult Fee</th><th>Available Days</th><th>Status</th><th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var d in Model.Doctors)
+                    {
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center gap-2">
+                                    <div class="avatar" style="background:#17a2b8;font-size:0.7rem">@d.FirstName[0]@d.LastName[0]</div>
+                                    <div>
+                                        <div class="fw-semibold">@d.FullName</div>
+                                        <small class="text-muted">@d.Email</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><span class="badge bg-light text-dark border">@d.Specialization</span></td>
+                            <td>UGX @d.ConsultationFee.ToString("N2")</td>
+                            <td><small class="text-muted">@string.Join(", ", d.AvailableDays.Select(x => x.ToString()[..3]))</small></td>
+                            <td>
+                                <span class="badge @(d.IsAvailable ? "badge-available" : "badge-occupied")">
+                                    @(d.IsAvailable ? "Available" : "Unavailable")
+                                </span>
+                            </td>
+                            <td>
+                                <form method="post" asp-page-handler="Toggle" asp-route-id="@d.Id" style="display:inline">
+                                    <button class="btn btn-sm btn-outline-secondary">Toggle</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>

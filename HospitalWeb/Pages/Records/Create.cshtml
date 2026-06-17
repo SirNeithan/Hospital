@@ -1,0 +1,129 @@
+@page
+@model HospitalWeb.Pages.Records.CreateModel
+@{ ViewData["Title"] = "New Medical Record"; ViewData["Page"] = "Records"; }
+
+<div class="page-header">
+    <h2><i class="fa-solid fa-file-medical me-2"></i>New Medical Record</h2>
+    <a href="/Records" class="btn btn-outline-secondary btn-sm">← Back</a>
+</div>
+
+<div class="card" style="max-width:780px">
+    <div class="card-body">
+        <form method="post" id="recordForm">
+            <input type="hidden" asp-for="PrescriptionsJson" id="prescriptionsJson" />
+
+            <div class="form-section-title">Consultation Details</div>
+            <div class="row g-3 mb-3">
+                <div class="col-md-4">
+                    <label class="form-label">Patient *</label>
+                    <select asp-for="PatientId" class="form-select">
+                        <option value="0">-- Select --</option>
+                        @foreach (var p in Model.Patients)
+                        { <option value="@p.Id">@p.FullName</option> }
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Doctor *</label>
+                    <select asp-for="DoctorId" class="form-select">
+                        <option value="0">-- Select --</option>
+                        @foreach (var d in Model.Doctors)
+                        { <option value="@d.Id">@d.FullName</option> }
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Linked Appointment</label>
+                    <select asp-for="AppointmentId" class="form-select">
+                        <option value="0">-- None --</option>
+                        @foreach (var a in Model.Appointments)
+                        { <option value="@a.Id">#@a.Id @a.AppointmentDate.ToString("MMM dd") – @a.PatientName</option> }
+                    </select>
+                </div>
+                <div class="col-12">
+                    <label class="form-label">Diagnosis *</label>
+                    <input asp-for="Diagnosis" class="form-control" />
+                    <span asp-validation-for="Diagnosis" class="text-danger"></span>
+                </div>
+                <div class="col-12">
+                    <label class="form-label">Symptoms *</label>
+                    <textarea asp-for="Symptoms" class="form-control" rows="2"></textarea>
+                </div>
+                <div class="col-12">
+                    <label class="form-label">Treatment Plan *</label>
+                    <textarea asp-for="TreatmentPlan" class="form-control" rows="2"></textarea>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Allergies</label>
+                    <input asp-for="Allergies" class="form-control" />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Lab Results</label>
+                    <input asp-for="LabResults" class="form-control" />
+                </div>
+                <div class="col-12">
+                    <label class="form-label">Notes</label>
+                    <textarea asp-for="Notes" class="form-control" rows="2"></textarea>
+                </div>
+            </div>
+
+            <div class="form-section-title">Prescriptions</div>
+            <div id="rxList" class="mb-3"></div>
+
+            <div class="card mb-3" style="background:#f7fafc">
+                <div class="card-body">
+                    <div class="row g-2" id="rxForm">
+                        <div class="col-md-3"><input class="form-control form-control-sm" id="rxName" placeholder="Medicine name" /></div>
+                        <div class="col-md-2"><input class="form-control form-control-sm" id="rxDosage" placeholder="Dosage (e.g. 500mg)" /></div>
+                        <div class="col-md-2"><input class="form-control form-control-sm" id="rxFreq" placeholder="Frequency" /></div>
+                        <div class="col-md-1"><input class="form-control form-control-sm" id="rxDays" type="number" placeholder="Days" min="1" /></div>
+                        <div class="col-md-3"><input class="form-control form-control-sm" id="rxInst" placeholder="Instructions" /></div>
+                        <div class="col-md-1"><button type="button" class="btn btn-primary btn-sm w-100" onclick="addRx()">Add</button></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex gap-2 mt-2">
+                <button type="submit" class="btn btn-primary" onclick="syncRx()">Save Record</button>
+                <a href="/Records" class="btn btn-outline-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    let prescriptions = [];
+
+    function addRx() {
+        const name = document.getElementById('rxName').value.trim();
+        const dosage = document.getElementById('rxDosage').value.trim();
+        const freq = document.getElementById('rxFreq').value.trim();
+        const days = parseInt(document.getElementById('rxDays').value) || 7;
+        const inst = document.getElementById('rxInst').value.trim();
+        if (!name) return alert('Medicine name is required.');
+        prescriptions.push({ MedicineName: name, Dosage: dosage, Frequency: freq, DurationDays: days, Instructions: inst });
+        renderRx();
+        ['rxName','rxDosage','rxFreq','rxDays','rxInst'].forEach(id => document.getElementById(id).value = '');
+    }
+
+    function removeRx(i) { prescriptions.splice(i,1); renderRx(); }
+
+    function renderRx() {
+        const el = document.getElementById('rxList');
+        if (!prescriptions.length) { el.innerHTML = '<p class="text-muted small">No prescriptions added.</p>'; return; }
+        el.innerHTML = prescriptions.map((rx, i) => `
+            <div class="prescription-item d-flex justify-content-between align-items-start">
+                <div>
+                    <strong>${rx.MedicineName}</strong> ${rx.Dosage} &mdash; ${rx.Frequency} for ${rx.DurationDays} days
+                    ${rx.Instructions ? '<br><small class="text-muted">' + rx.Instructions + '</small>' : ''}
+                </div>
+                <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeRx(${i})">✕</button>
+            </div>`).join('');
+    }
+
+    function syncRx() {
+        document.getElementById('prescriptionsJson').value = JSON.stringify(prescriptions);
+    }
+
+    renderRx();
+</script>
+}

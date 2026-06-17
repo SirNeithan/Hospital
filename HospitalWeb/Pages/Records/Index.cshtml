@@ -1,0 +1,41 @@
+@page
+@model HospitalWeb.Pages.Records.IndexModel
+@{ ViewData["Title"] = "Medical Records"; ViewData["Page"] = "Records"; }
+
+<div class="page-header">
+    <h2><i class="fa-solid fa-file-medical me-2"></i>Medical Records</h2>
+    <a href="/Records/Create" class="btn btn-primary">+ New Record</a>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h5>All Records</h5>
+        <small class="text-muted">@Model.Records.Count record(s)</small>
+    </div>
+    <div class="card-body p-0">
+        @if (!Model.Records.Any())
+        {
+            <div class="empty-state"><div class="empty-icon"><i class="fa-solid fa-file-medical"></i></div><p>No records yet</p></div>
+        }
+        else
+        {
+            <table class="table">
+                <thead><tr><th>ID</th><th>Date</th><th>Patient</th><th>Doctor</th><th>Diagnosis</th><th>Prescriptions</th><th></th></tr></thead>
+                <tbody>
+                    @foreach (var r in Model.Records)
+                    {
+                        <tr>
+                            <td><span class="text-muted">#@r.Id</span></td>
+                            <td><small>@r.RecordDate.ToString("MMM dd, yyyy")</small></td>
+                            <td class="fw-semibold">@r.PatientName</td>
+                            <td><small class="text-muted">@r.DoctorName</small></td>
+                            <td>@r.Diagnosis</td>
+                            <td><span class="badge bg-light text-dark border">@r.Prescriptions.Count Rx</span></td>
+                            <td><a href="/Records/Details?id=@r.Id" class="btn btn-sm btn-outline-secondary">View</a></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>

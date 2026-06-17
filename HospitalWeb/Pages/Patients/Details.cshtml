@@ -1,0 +1,164 @@
+@page
+@model HospitalWeb.Pages.Patients.DetailsModel
+@{ ViewData["Title"] = "Patient Details"; ViewData["Page"] = "Patients"; }
+
+@if (Model.Patient == null) { <p>Patient not found.</p> return; }
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+
+<div class="page-header">
+    <div class="d-flex align-items-center gap-3">
+        <div class="avatar" style="width:52px;height:52px;font-size:1.1rem">
+            @Model.Patient.FirstName[0]@Model.Patient.LastName[0]
+        </div>
+        <div>
+            <h2 class="mb-0">@Model.Patient.FullName</h2>
+            <small class="text-muted">Patient #@Model.Patient.Id · Registered @Model.Patient.RegistrationDate.ToString("MMM dd, yyyy")</small>
+        </div>
+    </div>
+    <div class="d-flex gap-2">
+        <a href="/Patients/Edit?id=@Model.Patient.Id" class="btn btn-outline-primary btn-sm">Edit</a>
+        @if (!Model.Patient.IsAdmitted)
+        {
+            <a href="/Patients/Admit?id=@Model.Patient.Id" class="btn btn-primary btn-sm">Admit Patient</a>
+        }
+        else
+        {
+            <form method="post" asp-page-handler="Discharge" asp-route-id="@Model.Patient.Id" style="display:inline">
+                <button class="btn btn-outline-danger btn-sm" onclick="return confirm('Discharge this patient?')">Discharge</button>
+            </form>
+        }
+        <a href="/Patients" class="btn btn-outline-secondary btn-sm">← Back</a>
+    </div>
+</div>
+
+<div class="row g-4">
+    <!-- Info -->
+    <div class="col-md-5">
+        <div class="card mb-4">
+            <div class="card-header"><h5>Personal Information</h5></div>
+            <div class="card-body">
+                <table class="table table-sm table-borderless mb-0">
+                    <tr><td class="text-muted" style="width:40%">Full Name</td><td class="fw-semibold">@Model.Patient.FullName</td></tr>
+                    <tr><td class="text-muted">Date of Birth</td><td>@Model.Patient.DateOfBirth.ToString("MMM dd, yyyy") (Age @Model.Patient.Age)</td></tr>
+                    <tr><td class="text-muted">Gender</td><td>@Model.Patient.Gender</td></tr>
+                    <tr><td class="text-muted">Blood Type</td><td><span class="badge bg-danger text-white">@Model.Patient.BloodType</span></td></tr>
+                    <tr><td class="text-muted">Phone</td><td>@Model.Patient.PhoneNumber</td></tr>
+                    <tr><td class="text-muted">Email</td><td>@Model.Patient.Email</td></tr>
+                    <tr><td class="text-muted">Address</td><td>@Model.Patient.Address</td></tr>
+                    <tr><td class="text-muted">Emergency</td><td>@Model.Patient.EmergencyContactName<br/><small class="text-muted">@Model.Patient.EmergencyContactPhone</small></td></tr>
+                    <tr>
+                        <td class="text-muted">Status</td>
+                        <td>
+                            <span class="badge @(Model.Patient.IsAdmitted ? "badge-admitted" : "badge-outpatient")">
+                                @(Model.Patient.IsAdmitted ? "Admitted" : "Outpatient")
+                            </span>
+                            @if (Model.Patient.IsAdmitted && Model.AssignedRoom != null)
+                            {
+                                <br/><small class="text-muted">Room @Model.AssignedRoom.RoomNumber (@Model.AssignedRoom.Type)</small>
+                            }
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-7">
+        <!-- Appointments -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5><i class="fa-solid fa-calendar-check me-2"></i>Appointments</h5>
+                <a href="/Appointments/Create?patientId=@Model.Patient.Id" class="btn btn-sm btn-outline-primary">+ New</a>
+            </div>
+            <div class="card-body p-0">
+                @if (!Model.Appointments.Any())
+                {
+                    <div class="empty-state"><p>No appointments</p></div>
+                }
+                else
+                {
+                    <table class="table">
+                        <thead><tr><th>Date</th><th>Doctor</th><th>Reason</th><th>Status</th></tr></thead>
+                        <tbody>
+                            @foreach (var a in Model.Appointments.Take(5))
+                            {
+                                <tr>
+                                    <td><small>@a.AppointmentDate.ToString("MMM dd HH:mm")</small></td>
+                                    <td><small>@a.DoctorName</small></td>
+                                    <td><small>@a.Reason</small></td>
+                                    <td><span class="badge badge-@a.Status.ToString().ToLower()">@a.Status</span></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </div>
+
+        <!-- Medical Records -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5><i class="fa-solid fa-file-medical me-2"></i>Medical Records</h5>
+                <a href="/Records/Create?patientId=@Model.Patient.Id" class="btn btn-sm btn-outline-primary">+ New</a>
+            </div>
+            <div class="card-body p-0">
+                @if (!Model.Records.Any())
+                {
+                    <div class="empty-state"><p>No records</p></div>
+                }
+                else
+                {
+                    <table class="table">
+                        <thead><tr><th>Date</th><th>Doctor</th><th>Diagnosis</th><th></th></tr></thead>
+                        <tbody>
+                            @foreach (var r in Model.Records.Take(5))
+                            {
+                                <tr>
+                                    <td><small>@r.RecordDate.ToString("MMM dd, yyyy")</small></td>
+                                    <td><small>@r.DoctorName</small></td>
+                                    <td><small>@r.Diagnosis</small></td>
+                                    <td><a href="/Records/Details?id=@r.Id" class="btn btn-sm btn-outline-secondary">View</a></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </div>
+
+        <!-- Bills -->
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fa-solid fa-file-invoice-dollar me-2"></i>Bills</h5>
+                <a href="/Billing/Create?patientId=@Model.Patient.Id" class="btn btn-sm btn-outline-primary">+ New Bill</a>
+            </div>
+            <div class="card-body p-0">
+                @if (!Model.Bills.Any())
+                {
+                    <div class="empty-state"><p>No bills</p></div>
+                }
+                else
+                {
+                    <table class="table">
+                        <thead><tr><th>Date</th><th>Total</th><th>Balance</th><th>Status</th></tr></thead>
+                        <tbody>
+                            @foreach (var b in Model.Bills)
+                            {
+                                <tr>
+                                    <td><small>@b.BillDate.ToString("MMM dd")</small></td>
+                                    <td>UGX @b.TotalAmount.ToString("N2")</td>
+                                    <td>UGX @b.Balance.ToString("N2")</td>
+                                    <td><span class="badge badge-@b.Status.ToString().ToLower()">@b.Status</span></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </div>
+    </div>
+</div>

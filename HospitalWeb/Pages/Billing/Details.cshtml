@@ -1,0 +1,108 @@
+@page
+@model HospitalWeb.Pages.Billing.DetailsModel
+@{ ViewData["Title"] = "Bill Details"; ViewData["Page"] = "Billing"; }
+
+@if (Model.Bill == null) { <p>Bill not found.</p> return; }
+@{ var b = Model.Bill; }
+
+@if (TempData["Success"] != null) { <div class="alert alert-success">@TempData["Success"]</div> }
+
+<div class="page-header">
+    <h2><i class="fa-solid fa-receipt me-2"></i>Bill #@b.Id</h2>
+    <div class="d-flex gap-2">
+        @if (b.Status != BillStatus.Paid && b.Status != BillStatus.Cancelled)
+        { <a href="/Billing/Pay?id=@b.Id" class="btn btn-success btn-sm">Record Payment</a> }
+        <a href="/Billing" class="btn btn-outline-secondary btn-sm">← Back</a>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5>Invoice</h5>
+                <span class="badge @(b.Status switch { BillStatus.Paid => "badge-paid", BillStatus.Overdue => "badge-overdue", BillStatus.PartiallyPaid => "badge-partialpaid", _ => "badge-pending" })">@b.Status</span>
+            </div>
+            <div class="card-body">
+                <div class="row mb-4">
+                    <div class="col">
+                        <div class="text-muted small">Billed To</div>
+                        <div class="fw-semibold">@b.PatientName</div>
+                    </div>
+                    <div class="col text-end">
+                        <div class="text-muted small">Bill Date</div>
+                        <div>@b.BillDate.ToString("MMMM dd, yyyy")</div>
+                        <div class="text-muted small mt-1">Due Date</div>
+                        <div class="@(b.DueDate < DateTime.Today && b.Balance > 0 ? "text-danger fw-semibold" : "")">@b.DueDate.ToString("MMMM dd, yyyy")</div>
+                    </div>
+                </div>
+
+                <table class="table">
+                    <thead>
+                        <tr><th>Description</th><th class="text-end">Qty</th><th class="text-end">Unit Price</th><th class="text-end">Total</th></tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in b.Items)
+                        {
+                            <tr>
+                                <td>@item.Description</td>
+                                <td class="text-end">@item.Quantity</td>
+                                <td class="text-end">UGX @item.UnitPrice.ToString("N2")</td>
+                                <td class="text-end fw-semibold">UGX @item.Total.ToString("N2")</td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr><td colspan="3" class="text-end text-muted">Subtotal</td><td class="text-end">UGX @b.SubTotal.ToString("N2")</td></tr>
+                        <tr><td colspan="3" class="text-end text-muted">Tax (8%)</td><td class="text-end">UGX @b.Tax.ToString("N2")</td></tr>
+                        @if (b.InsuranceCoverage > 0)
+                        {
+                            <tr><td colspan="3" class="text-end text-muted">Insurance (@b.InsuranceProvider)</td><td class="text-end text-success">-UGX @b.InsuranceCoverage.ToString("N2")</td></tr>
+                        }
+                        <tr class="table-light"><td colspan="3" class="text-end fw-bold">TOTAL</td><td class="text-end fw-bold fs-5">UGX @b.TotalAmount.ToString("N2")</td></tr>
+                        <tr><td colspan="3" class="text-end text-muted">Amount Paid</td><td class="text-end text-success">UGX @b.AmountPaid.ToString("N2")</td></tr>
+                        <tr class="@(b.Balance > 0 ? "table-warning" : "table-success")">
+                            <td colspan="3" class="text-end fw-bold">BALANCE DUE</td>
+                            <td class="text-end fw-bold">UGX @b.Balance.ToString("N2")</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        @if (!string.IsNullOrEmpty(b.InsuranceProvider))
+        {
+            <div class="card mb-4">
+                <div class="card-header"><h5>Insurance</h5></div>
+                <div class="card-body">
+                    <div class="text-muted small">Provider</div><div class="fw-semibold mb-2">@b.InsuranceProvider</div>
+                    @if (!string.IsNullOrEmpty(b.InsurancePolicyNumber))
+                    { <div class="text-muted small">Policy #</div><div class="mb-2">@b.InsurancePolicyNumber</div> }
+                    <div class="text-muted small">Coverage</div><div class="text-success fw-semibold">UGX @b.InsuranceCoverage.ToString("N2")</div>
+                </div>
+            </div>
+        }
+        <div class="card">
+            <div class="card-header"><h5>Payment Summary</h5></div>
+            <div class="card-body">
+                <div class="d-flex justify-content-between mb-2">
+                    <span class="text-muted">Total Amount</span><span class="fw-semibold">UGX @b.TotalAmount.ToString("N2")</span>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                    <span class="text-muted">Paid</span><span class="text-success">UGX @b.AmountPaid.ToString("N2")</span>
+                </div>
+                <hr/>
+                <div class="d-flex justify-content-between">
+                    <span class="fw-semibold">Balance</span>
+                    <span class="fw-bold @(b.Balance > 0 ? "text-warning" : "text-success")">UGX @b.Balance.ToString("N2")</span>
+                </div>
+                @if (b.Status != BillStatus.Paid && b.Status != BillStatus.Cancelled)
+                {
+                    <a href="/Billing/Pay?id=@b.Id" class="btn btn-success w-100 mt-3">Pay Now</a>
+                }
+            </div>
+        </div>
+    </div>
+</div>

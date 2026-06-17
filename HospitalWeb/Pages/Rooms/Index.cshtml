@@ -1,0 +1,92 @@
+@page
+@model HospitalWeb.Pages.Rooms.IndexModel
+@{ ViewData["Title"] = "Rooms & Wards"; ViewData["Page"] = "Rooms"; }
+
+<div class="page-header">
+    <h2><i class="fa-solid fa-bed me-2"></i>Rooms & Wards</h2>
+    <a href="/Rooms/Create" class="btn btn-primary">+ Add Room</a>
+</div>
+
+<div class="d-flex gap-2 mb-4">
+    <a href="?Filter=all"       class="btn btn-sm @(Model.Filter == "all"       ? "btn-primary" : "btn-outline-secondary")">All Rooms</a>
+    <a href="?Filter=available" class="btn btn-sm @(Model.Filter == "available" ? "btn-primary" : "btn-outline-secondary")">Available</a>
+</div>
+
+<!-- Room Type Summary -->
+<div class="stat-grid mb-4">
+    @foreach (var type in Enum.GetValues<HospitalWeb.Models.RoomType>())
+    {
+        int count = Model.Rooms.Count(r => r.Type == type);
+        int avail = Model.Rooms.Count(r => r.Type == type && r.HasAvailableBed);
+        if (count > 0)
+        {
+            <div class="stat-card">
+                <div class="stat-icon blue"><i class="fa-solid fa-bed"></i></div>
+                <div class="stat-info">
+                    <div class="stat-value">@avail<span style="font-size:1rem;color:#718096"> / @count</span></div>
+                    <div class="stat-label">@type</div>
+                </div>
+            </div>
+        }
+    }
+</div>
+
+<div class="card">
+    <div class="card-body p-0">
+        @if (!Model.Rooms.Any())
+        {
+            <div class="empty-state"><div class="empty-icon"><i class="fa-solid fa-bed"></i></div><p>No rooms found</p></div>
+        }
+        else
+        {
+            <table class="table">
+                <thead>
+                    <tr><th>Room</th><th>Type</th><th>Ward</th><th>Floor</th><th>Occupancy</th><th>Daily Rate</th><th>Status</th><th></th></tr>
+                </thead>
+                <tbody>
+                    @foreach (var r in Model.Rooms)
+                    {
+                        <tr>
+                            <td class="fw-semibold">@r.RoomNumber</td>
+                            <td><span class="badge bg-light text-dark border">@r.Type</span></td>
+                            <td><small class="text-muted">@r.Ward</small></td>
+                            <td>@r.Floor</td>
+                            <td>
+                                <div class="d-flex align-items-center gap-2">
+                                    <div style="width:60px;background:#e8edf3;border-radius:4px;height:6px">
+                                        @{ int pct = r.Capacity > 0 ? (r.CurrentOccupancy * 100 / r.Capacity) : 0; }
+                                        <div style="width:@pct%;background:@(pct >= 100 ? "#ef4444" : pct >= 50 ? "#f59e0b" : "#10b981");height:6px;border-radius:4px"></div>
+                                    </div>
+                                    <small>@r.CurrentOccupancy/@r.Capacity</small>
+                                </div>
+                            </td>
+                            <td>UGX @r.DailyRate.ToString("N2")/day</td>
+                            <td>
+                                @{
+                                    string cls = r.Status switch {
+                                        RoomStatus.Available         => "badge-available",
+                                        RoomStatus.Occupied          => "badge-occupied",
+                                        RoomStatus.UnderMaintenance  => "badge-maintenance",
+                                        RoomStatus.Reserved          => "badge-reserved",
+                                        _ => "badge-available"
+                                    };
+                                }
+                                <span class="badge @cls">@r.Status</span>
+                            </td>
+                            <td>
+                                <form method="post" class="d-inline-flex gap-1">
+                                    <input type="hidden" name="id" value="@r.Id" />
+                                    <select name="status" class="form-select form-select-sm" style="width:auto">
+                                        @foreach (var s in Enum.GetValues<HospitalWeb.Models.RoomStatus>())
+                                        { <option value="@s" selected="@(r.Status == s)">@s</option> }
+                                    </select>
+                                    <button class="btn btn-sm btn-outline-secondary">Set</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>

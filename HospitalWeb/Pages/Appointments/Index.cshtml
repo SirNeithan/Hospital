@@ -1,0 +1,72 @@
+@page
+@model HospitalWeb.Pages.Appointments.IndexModel
+@{ ViewData["Title"] = "Appointments"; ViewData["Page"] = "Appointments"; }
+
+<div class="page-header">
+    <h2><i class="fa-solid fa-calendar-check me-2"></i>Appointments</h2>
+    <a href="/Appointments/Create" class="btn btn-primary">+ Schedule</a>
+</div>
+
+<!-- Filter tabs -->
+<div class="d-flex gap-2 mb-4">
+    <a href="?Filter=upcoming" class="btn btn-sm @(Model.Filter == "upcoming" ? "btn-primary" : "btn-outline-secondary")">Upcoming</a>
+    <a href="?Filter=today"    class="btn btn-sm @(Model.Filter == "today"    ? "btn-primary" : "btn-outline-secondary")">Today</a>
+    <a href="?Filter=all"      class="btn btn-sm @(Model.Filter == "all"      ? "btn-primary" : "btn-outline-secondary")">All</a>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h5>@(Model.Filter == "today" ? "Today's Appointments" : Model.Filter == "all" ? "All Appointments" : "Upcoming Appointments")</h5>
+        <small class="text-muted">@Model.Appointments.Count result(s)</small>
+    </div>
+    <div class="card-body p-0">
+        @if (!Model.Appointments.Any())
+        {
+            <div class="empty-state"><div class="empty-icon"><i class="fa-solid fa-calendar-xmark"></i></div><p>No appointments found</p></div>
+        }
+        else
+        {
+            <table class="table">
+                <thead>
+                    <tr><th>ID</th><th>Date & Time</th><th>Patient</th><th>Doctor</th><th>Reason</th><th>Status</th><th></th></tr>
+                </thead>
+                <tbody>
+                    @foreach (var a in Model.Appointments)
+                    {
+                        <tr>
+                            <td><span class="text-muted">#@a.Id</span></td>
+                            <td>
+                                <div class="fw-semibold">@a.AppointmentDate.ToString("MMM dd, yyyy")</div>
+                                <small class="text-muted">@a.AppointmentDate.ToString("HH:mm")</small>
+                            </td>
+                            <td>@a.PatientName</td>
+                            <td><small class="text-muted">@a.DoctorName</small></td>
+                            <td><small>@a.Reason</small></td>
+                            <td>
+                                @{
+                                    string cls = a.Status switch {
+                                        AppointmentStatus.Confirmed  => "badge-confirmed",
+                                        AppointmentStatus.Completed  => "badge-completed",
+                                        AppointmentStatus.Cancelled  => "badge-cancelled",
+                                        AppointmentStatus.InProgress => "badge-inprogress",
+                                        AppointmentStatus.NoShow     => "badge-noshow",
+                                        _                            => "badge-scheduled"
+                                    };
+                                }
+                                <span class="badge @cls">@a.Status</span>
+                            </td>
+                            <td>
+                                @if (a.Status != AppointmentStatus.Cancelled && a.Status != AppointmentStatus.Completed)
+                                {
+                                    <form method="post" asp-page-handler="Cancel" asp-route-id="@a.Id" style="display:inline">
+                                        <button class="btn btn-sm btn-outline-danger" onclick="return confirm('Cancel this appointment?')">Cancel</button>
+                                    </form>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>

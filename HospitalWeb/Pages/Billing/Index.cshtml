@@ -1,0 +1,86 @@
+@page
+@model HospitalWeb.Pages.Billing.IndexModel
+@{ ViewData["Title"] = "Billing"; ViewData["Page"] = "Billing"; }
+
+<div class="page-header">
+    <h2><i class="fa-solid fa-file-invoice-dollar me-2"></i>Billing & Payments</h2>
+    <a href="/Billing/Create" class="btn btn-primary">+ Generate Bill</a>
+</div>
+
+<div class="stat-grid mb-4" style="grid-template-columns:repeat(3,1fr)">
+    <div class="stat-card">
+        <div class="stat-icon green"><i class="fa-solid fa-sack-dollar"></i></div>
+        <div class="stat-info">
+            <div class="stat-value">UGX @Model.TotalRevenue.ToString("N0")</div>
+            <div class="stat-label">Total Collected</div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon yellow"><i class="fa-solid fa-clock-rotate-left"></i></div>
+        <div class="stat-info">
+            <div class="stat-value">UGX @Model.Outstanding.ToString("N0")</div>
+            <div class="stat-label">Outstanding</div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon blue"><i class="fa-solid fa-receipt"></i></div>
+        <div class="stat-info">
+            <div class="stat-value">@Model.Bills.Count</div>
+            <div class="stat-label">@(Model.Filter == "unpaid" ? "Unpaid Bills" : "Total Bills")</div>
+        </div>
+    </div>
+</div>
+
+<div class="d-flex gap-2 mb-3">
+    <a href="?Filter=all"    class="btn btn-sm @(Model.Filter == "all"    ? "btn-primary" : "btn-outline-secondary")">All Bills</a>
+    <a href="?Filter=unpaid" class="btn btn-sm @(Model.Filter == "unpaid" ? "btn-primary" : "btn-outline-secondary")">Unpaid</a>
+</div>
+
+<div class="card">
+    <div class="card-body p-0">
+        @if (!Model.Bills.Any())
+        {
+            <div class="empty-state"><div class="empty-icon"><i class="fa-solid fa-receipt"></i></div><p>No bills found</p></div>
+        }
+        else
+        {
+            <table class="table">
+                <thead>
+                    <tr><th>ID</th><th>Patient</th><th>Date</th><th>Total</th><th>Paid</th><th>Balance</th><th>Status</th><th></th></tr>
+                </thead>
+                <tbody>
+                    @foreach (var b in Model.Bills)
+                    {
+                        <tr>
+                            <td><span class="text-muted">#@b.Id</span></td>
+                            <td class="fw-semibold">@b.PatientName</td>
+                            <td><small>@b.BillDate.ToString("MMM dd, yyyy")</small></td>
+                            <td>UGX @b.TotalAmount.ToString("N2")</td>
+                            <td class="text-success">UGX @b.AmountPaid.ToString("N2")</td>
+                            <td class="@(b.Balance > 0 ? "text-warning fw-semibold" : "text-success")">UGX @b.Balance.ToString("N2")</td>
+                            <td>
+                                @{
+                                    string cls = b.Status switch {
+                                        BillStatus.Paid          => "badge-paid",
+                                        BillStatus.PartiallyPaid => "badge-partialpaid",
+                                        BillStatus.Overdue       => "badge-overdue",
+                                        BillStatus.Cancelled     => "badge-cancelled",
+                                        _                        => "badge-pending"
+                                    };
+                                }
+                                <span class="badge @cls">@b.Status</span>
+                            </td>
+                            <td class="d-flex gap-1">
+                                <a href="/Billing/Details?id=@b.Id" class="btn btn-sm btn-outline-secondary">View</a>
+                                @if (b.Status != BillStatus.Paid && b.Status != BillStatus.Cancelled)
+                                {
+                                    <a href="/Billing/Pay?id=@b.Id" class="btn btn-sm btn-outline-success">Pay</a>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>

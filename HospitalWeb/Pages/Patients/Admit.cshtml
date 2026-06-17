@@ -1,0 +1,37 @@
+@page
+@model HospitalWeb.Pages.Patients.AdmitModel
+@{ ViewData["Title"] = "Admit Patient"; ViewData["Page"] = "Patients"; }
+
+<div class="page-header">
+    <h2><i class="fa-solid fa-hospital me-2"></i>Admit Patient</h2>
+    <a href="/Patients/Details?id=@Model.Patient?.Id" class="btn btn-outline-secondary btn-sm">← Back</a>
+</div>
+
+<div class="card" style="max-width:600px">
+    <div class="card-body">
+        <p><strong>Patient:</strong> @Model.Patient?.FullName</p>
+        <form method="post" asp-route-id="@Model.Patient?.Id">
+            <div class="mb-4">
+                <label class="form-label">Select Room *</label>
+                @if (!Model.AvailableRooms.Any())
+                {
+                    <div class="alert alert-warning">No available rooms at this time.</div>
+                }
+                else
+                {
+                    <select asp-for="RoomId" class="form-select">
+                        <option value="">-- Select a room --</option>
+                        @foreach (var r in Model.AvailableRooms)
+                        {
+                            <option value="@r.Id">Room @r.RoomNumber – @r.Type | Floor @r.Floor | UGX @r.DailyRate/day | Beds: @r.CurrentOccupancy/@r.Capacity</option>
+                        }
+                    </select>
+                }
+            </div>
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary" @(Model.AvailableRooms.Any() ? "" : "disabled")>Admit Patient</button>
+                <a href="/Patients/Details?id=@Model.Patient?.Id" class="btn btn-outline-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
