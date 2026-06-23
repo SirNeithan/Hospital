@@ -1,6 +1,6 @@
-using HospitalWeb.Data;
-using HospitalWeb.Models;
-using HospitalWeb.Services;
+using HospitalManagement.Data;
+using HospitalManagement.Core.Models;
+using HospitalManagement.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;

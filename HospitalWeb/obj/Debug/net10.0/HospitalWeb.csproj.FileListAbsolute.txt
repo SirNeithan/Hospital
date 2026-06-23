@@ -364,3 +364,9 @@ C:\Users\user\Desktop\Hospital\HospitalWeb\obj\Debug\net10.0\Hospital.47250AC7.U
 C:\Users\user\Desktop\Hospital\HospitalWeb\obj\Debug\net10.0\HospitalWeb.genruntimeconfig.cache
 C:\Users\user\Desktop\Hospital\HospitalWeb\obj\Debug\net10.0\ref\HospitalWeb.dll
 C:\Users\user\Desktop\Hospital\HospitalWeb\bin\Debug\net10.0\BCrypt.Net-Next.dll
+C:\Users\user\Desktop\Hospital\HospitalWeb\bin\Debug\net10.0\HospitalManagement.Core.dll
+C:\Users\user\Desktop\Hospital\HospitalWeb\bin\Debug\net10.0\HospitalManagement.Data.dll
+C:\Users\user\Desktop\Hospital\HospitalWeb\bin\Debug\net10.0\HospitalManagement.Services.dll
+C:\Users\user\Desktop\Hospital\HospitalWeb\bin\Debug\net10.0\HospitalManagement.Core.pdb
+C:\Users\user\Desktop\Hospital\HospitalWeb\bin\Debug\net10.0\HospitalManagement.Data.pdb
+C:\Users\user\Desktop\Hospital\HospitalWeb\bin\Debug\net10.0\HospitalManagement.Services.pdb

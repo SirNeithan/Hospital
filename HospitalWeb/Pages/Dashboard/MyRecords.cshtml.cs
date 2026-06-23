@@ -1,5 +1,5 @@
-using HospitalWeb.Data;
-using HospitalWeb.Models;
+using HospitalManagement.Data;
+using HospitalManagement.Core.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 

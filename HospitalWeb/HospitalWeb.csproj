@@ -15,4 +15,10 @@
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\HospitalManagement.Core\HospitalManagement.Core.csproj" />
+    <ProjectReference Include="..\HospitalManagement.Data\HospitalManagement.Data.csproj" />
+    <ProjectReference Include="..\HospitalManagement.Services\HospitalManagement.Services.csproj" />
+  </ItemGroup>
+
 </Project>

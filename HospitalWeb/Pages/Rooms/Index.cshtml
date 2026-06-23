@@ -14,7 +14,7 @@
 
 <!-- Room Type Summary -->
 <div class="stat-grid mb-4">
-    @foreach (var type in Enum.GetValues<HospitalWeb.Models.RoomType>())
+    @foreach (var type in Enum.GetValues<HospitalManagement.Core.Models.RoomType>())
     {
         int count = Model.Rooms.Count(r => r.Type == type);
         int avail = Model.Rooms.Count(r => r.Type == type && r.HasAvailableBed);
@@ -77,7 +77,7 @@
                                 <form method="post" class="d-inline-flex gap-1">
                                     <input type="hidden" name="id" value="@r.Id" />
                                     <select name="status" class="form-select form-select-sm" style="width:auto">
-                                        @foreach (var s in Enum.GetValues<HospitalWeb.Models.RoomStatus>())
+                                        @foreach (var s in Enum.GetValues<HospitalManagement.Core.Models.RoomStatus>())
                                         { <option value="@s" selected="@(r.Status == s)">@s</option> }
                                     </select>
                                     <button class="btn btn-sm btn-outline-secondary">Set</button>

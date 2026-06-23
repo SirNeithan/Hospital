@@ -31,150 +31,150 @@ build_property._RazorSourceGeneratorDebug =
 build_property.EffectiveAnalysisLevelStyle = 10.0
 build_property.EnableCodeStyleSeverity = 
 
-[C:/Users/user/Desktop/Hospital/HospitalWeb/Pages/Admin/Users.cshtml]
+[C:/Users/user/Desktop/Hospital/hospitalweb/Pages/Admin/Users.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cVXNlcnMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Hospital/HospitalWeb/Pages/Appointments/Create.cshtml]
+[C:/Users/user/Desktop/Hospital/hospitalweb/Pages/Appointments/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXBwb2ludG1lbnRzXENyZWF0ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Hospital/HospitalWeb/Pages/Appointments/Index.cshtml]
+[C:/Users/user/Desktop/Hospital/hospitalweb/Pages/Appointments/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXBwb2ludG1lbnRzXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Hospital/HospitalWeb/Pages/Auth/AccessDenied.cshtml]
+[C:/Users/user/Desktop/Hospital/hospitalweb/Pages/Auth/AccessDenied.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXV0aFxBY2Nlc3NEZW5pZWQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Hospital/HospitalWeb/Pages/Auth/Login.cshtml]
+[C:/Users/user/Desktop/Hospital/hospitalweb/Pages/Auth/Login.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXV0aFxMb2dpbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Hospital/HospitalWeb/Pages/Auth/Logout.cshtml]
+[C:/Users/user/Desktop/Hospital/hospitalweb/Pages/Auth/Logout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXV0aFxMb2dvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Hospital/HospitalWeb/Pages/Auth/Register.cshtml]
+[C:/Users/user/Desktop/Hospital/hospitalweb/Pages/Auth/Register.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXV0aFxSZWdpc3Rlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Hospital/HospitalWeb/Pages/Billing/Create.cshtml]
+[C:/Users/user/Desktop/Hospital/hospitalweb/Pages/Billing/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQmlsbGluZ1xDcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Hospital/HospitalWeb/Pages/Billing/Details.cshtml]
+[C:/Users/user/Desktop/Hospital/hospitalweb/Pages/Billing/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQmlsbGluZ1xEZXRhaWxzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Hospital/HospitalWeb/Pages/Billing/Index.cshtml]
+[C:/Users/user/Desktop/Hospital/hospitalweb/Pages/Billing/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQmlsbGluZ1xJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Hospital/HospitalWeb/Pages/Billing/Pay.cshtml]
+[C:/Users/user/Desktop/Hospital/hospitalweb/Pages/Billing/Pay.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQmlsbGluZ1xQYXkuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Hospital/HospitalWeb/Pages/Dashboard/BookAppointment.cshtml]
+[C:/Users/user/Desktop/Hospital/hospitalweb/Pages/Dashboard/BookAppointment.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRGFzaGJvYXJkXEJvb2tBcHBvaW50bWVudC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Hospital/HospitalWeb/Pages/Dashboard/Doctors.cshtml]
+[C:/Users/user/Desktop/Hospital/hospitalweb/Pages/Dashboard/Doctors.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRGFzaGJvYXJkXERvY3RvcnMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Hospital/HospitalWeb/Pages/Dashboard/Index.cshtml]
+[C:/Users/user/Desktop/Hospital/hospitalweb/Pages/Dashboard/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRGFzaGJvYXJkXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Hospital/HospitalWeb/Pages/Dashboard/MyBills.cshtml]
+[C:/Users/user/Desktop/Hospital/hospitalweb/Pages/Dashboard/MyBills.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRGFzaGJvYXJkXE15QmlsbHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Hospital/HospitalWeb/Pages/Dashboard/MyRecords.cshtml]
+[C:/Users/user/Desktop/Hospital/hospitalweb/Pages/Dashboard/MyRecords.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRGFzaGJvYXJkXE15UmVjb3Jkcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Hospital/HospitalWeb/Pages/Dashboard/Profile.cshtml]
+[C:/Users/user/Desktop/Hospital/hospitalweb/Pages/Dashboard/Profile.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRGFzaGJvYXJkXFByb2ZpbGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Hospital/HospitalWeb/Pages/Doctors/Create.cshtml]
+[C:/Users/user/Desktop/Hospital/hospitalweb/Pages/Doctors/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRG9jdG9yc1xDcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Hospital/HospitalWeb/Pages/Doctors/Index.cshtml]
+[C:/Users/user/Desktop/Hospital/hospitalweb/Pages/Doctors/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRG9jdG9yc1xJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Hospital/HospitalWeb/Pages/Error.cshtml]
+[C:/Users/user/Desktop/Hospital/hospitalweb/Pages/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3IuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Hospital/HospitalWeb/Pages/Index.cshtml]
+[C:/Users/user/Desktop/Hospital/hospitalweb/Pages/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Hospital/HospitalWeb/Pages/Patients/Admit.cshtml]
+[C:/Users/user/Desktop/Hospital/hospitalweb/Pages/Patients/Admit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUGF0aWVudHNcQWRtaXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Hospital/HospitalWeb/Pages/Patients/Create.cshtml]
+[C:/Users/user/Desktop/Hospital/hospitalweb/Pages/Patients/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUGF0aWVudHNcQ3JlYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Hospital/HospitalWeb/Pages/Patients/Details.cshtml]
+[C:/Users/user/Desktop/Hospital/hospitalweb/Pages/Patients/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUGF0aWVudHNcRGV0YWlscy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Hospital/HospitalWeb/Pages/Patients/Edit.cshtml]
+[C:/Users/user/Desktop/Hospital/hospitalweb/Pages/Patients/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUGF0aWVudHNcRWRpdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Hospital/HospitalWeb/Pages/Patients/Index.cshtml]
+[C:/Users/user/Desktop/Hospital/hospitalweb/Pages/Patients/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUGF0aWVudHNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Hospital/HospitalWeb/Pages/Records/Create.cshtml]
+[C:/Users/user/Desktop/Hospital/hospitalweb/Pages/Records/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVjb3Jkc1xDcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Hospital/HospitalWeb/Pages/Records/Details.cshtml]
+[C:/Users/user/Desktop/Hospital/hospitalweb/Pages/Records/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVjb3Jkc1xEZXRhaWxzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Hospital/HospitalWeb/Pages/Records/Index.cshtml]
+[C:/Users/user/Desktop/Hospital/hospitalweb/Pages/Records/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVjb3Jkc1xJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Hospital/HospitalWeb/Pages/Rooms/Create.cshtml]
+[C:/Users/user/Desktop/Hospital/hospitalweb/Pages/Rooms/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUm9vbXNcQ3JlYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Hospital/HospitalWeb/Pages/Rooms/Index.cshtml]
+[C:/Users/user/Desktop/Hospital/hospitalweb/Pages/Rooms/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUm9vbXNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Hospital/HospitalWeb/Pages/Shared/_Layout.cshtml]
+[C:/Users/user/Desktop/Hospital/hospitalweb/Pages/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Hospital/HospitalWeb/Pages/Shared/_ValidationScriptsPartial.cshtml]
+[C:/Users/user/Desktop/Hospital/hospitalweb/Pages/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Hospital/HospitalWeb/Pages/Shared/_ViewImports.cshtml]
+[C:/Users/user/Desktop/Hospital/hospitalweb/Pages/Shared/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9WaWV3SW1wb3J0cy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Hospital/HospitalWeb/Pages/Shared/_ViewStart.cshtml]
+[C:/Users/user/Desktop/Hospital/hospitalweb/Pages/Shared/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9WaWV3U3RhcnQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Hospital/HospitalWeb/Pages/_ViewImports.cshtml]
+[C:/Users/user/Desktop/Hospital/hospitalweb/Pages/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/user/Desktop/Hospital/HospitalWeb/Pages/_ViewStart.cshtml]
+[C:/Users/user/Desktop/Hospital/hospitalweb/Pages/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
