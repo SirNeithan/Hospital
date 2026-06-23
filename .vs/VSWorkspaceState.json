@@ -2,7 +2,9 @@
   "ExpandedNodes": [
     "",
     "\\HospitalManagementSystem",
+    "\\HospitalManagementSystem\\UI",
     "\\HospitalWeb"
   ],
+  "SelectedNode": "\\HospitalManagementSystem\\UI\\BillingMenu.cs",
   "PreviewInSolutionExplorer": false
 }

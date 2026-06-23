@@ -1,10 +1,12 @@
 using HospitalWeb.Models;
 using HospitalWeb.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace HospitalWeb.Pages.Billing;
 
+[Authorize(Roles = "Admin")]
 public class IndexModel : PageModel
 {
     private readonly BillingService _billing;

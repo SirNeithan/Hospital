@@ -1,5 +1,6 @@
 using HospitalWeb.Data;
 using HospitalWeb.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
 // Tell Npgsql to handle unspecified DateTime as UTC
@@ -13,7 +14,23 @@ builder.Services.AddRazorPages();
 builder.Services.AddDbContext<HospitalDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// Cookie-based authentication
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath    = "/Auth/Login";
+        options.LogoutPath   = "/Auth/Logout";
+        options.AccessDeniedPath = "/Auth/AccessDenied";
+        options.ExpireTimeSpan   = TimeSpan.FromHours(8);
+        options.SlidingExpiration = true;
+        options.Cookie.HttpOnly  = true;
+        options.Cookie.SecurePolicy = Microsoft.AspNetCore.Http.CookieSecurePolicy.SameAsRequest;
+    });
+
+builder.Services.AddAuthorization();
+
 // Register hospital services as scoped (one per request, uses DbContext)
+builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<PatientService>();
 builder.Services.AddScoped<DoctorService>();
 builder.Services.AddScoped<AppointmentService>();
@@ -46,6 +63,12 @@ using (var scope = app.Services.CreateScope())
         var seeder = new DbSeeder(db);
         seeder.Seed();
     }
+    else
+    {
+        // Still ensure admin accounts exist even if other data is already seeded
+        var seeder = new DbSeeder(db);
+        seeder.SeedAdminsOnly();
+    }
 }
 
 if (!app.Environment.IsDevelopment())
@@ -57,7 +80,10 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
+
+app.UseAuthentication();
 app.UseAuthorization();
+
 app.MapRazorPages();
 
 app.Run();

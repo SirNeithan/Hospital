@@ -1,0 +1,104 @@
+@page
+@model HospitalWeb.Pages.Admin.UsersModel
+@using HospitalWeb.Models
+@{ ViewData["Title"] = "User Management"; ViewData["Page"] = "Admin"; }
+
+<div class="page-header">
+    <h2><i class="fa-solid fa-users-gear me-2"></i>User Management</h2>
+</div>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show"><i class="fa-solid fa-circle-check me-2"></i>@TempData["Success"]<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger"><i class="fa-solid fa-circle-exclamation me-2"></i>@TempData["Error"]</div>
+}
+
+<div class="row g-4">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header"><h5>All Users (@Model.Users.Count)</h5></div>
+            <div class="card-body p-0">
+                <table class="table mb-0">
+                    <thead>
+                        <tr><th>User</th><th>Role</th><th>Last Login</th><th>Status</th><th></th></tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var u in Model.Users)
+                    {
+                        <tr>
+                            <td>
+                                <div class="fw-semibold">@u.FullName</div>
+                                <small class="text-muted">@@@u.Username</small>
+                                @if (!string.IsNullOrEmpty(u.Email))
+                                {<br><small class="text-muted">@u.Email</small>}
+                            </td>
+                            <td>
+                                <span class="badge @(u.Role == UserRole.Admin ? "bg-primary" : "bg-success")">@u.Role</span>
+                            </td>
+                            <td><small class="text-muted">@(u.LastLogin?.ToString("MMM dd, yyyy HH:mm") ?? "Never")</small></td>
+                            <td>
+                                <span class="badge @(u.IsActive ? "bg-success" : "bg-secondary")">
+                                    @(u.IsActive ? "Active" : "Inactive")
+                                </span>
+                            </td>
+                            <td>
+                                <form method="post" asp-page-handler="Toggle" style="display:inline">
+                                    <input type="hidden" name="id" value="@u.Id" />
+                                    <button class="btn btn-sm @(u.IsActive ? "btn-outline-danger" : "btn-outline-success")"
+                                            onclick="return confirm('@(u.IsActive ? "Deactivate" : "Activate") this user?')">
+                                        @(u.IsActive ? "Deactivate" : "Activate")
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create admin account -->
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header"><h5><i class="fa-solid fa-user-shield me-2"></i>Add Admin Account</h5></div>
+            <div class="card-body">
+                @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+                {
+                    <div class="alert alert-danger small p-2">@Model.ErrorMessage</div>
+                }
+                <form method="post" asp-page-handler="Create">
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Full Name *</label>
+                        <input asp-for="NewFullName" class="form-control" placeholder="e.g. Dr. John Doe" />
+                        <span asp-validation-for="NewFullName" class="text-danger small"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Username *</label>
+                        <input asp-for="NewUsername" class="form-control" placeholder="e.g. dr.john" />
+                        <span asp-validation-for="NewUsername" class="text-danger small"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Email</label>
+                        <input asp-for="NewEmail" class="form-control" placeholder="email@cityhospital.co.ug" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Password * <small class="text-muted">(min 6 chars)</small></label>
+                        <input asp-for="NewPassword" type="password" class="form-control" />
+                        <span asp-validation-for="NewPassword" class="text-danger small"></span>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="fa-solid fa-user-plus me-2"></i>Create Admin
+                    </button>
+                </form>
+                <div class="mt-3 p-2 rounded" style="background:#fef9c3;border:1px solid #fde047;font-size:.8rem">
+                    <i class="fa-solid fa-triangle-exclamation me-1 text-warning"></i>
+                    Admin accounts have full system access. Issue credentials carefully.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

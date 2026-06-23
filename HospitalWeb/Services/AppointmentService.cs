@@ -20,21 +20,31 @@ public class AppointmentService
 
         if (!doctor.IsAvailable) return (false, $"{doctor.FullName} is currently unavailable.", null);
 
-        if (!doctor.AvailableDays.Contains(appointmentDate.DayOfWeek))
-            return (false, $"{doctor.FullName} does not work on {appointmentDate.DayOfWeek}.", null);
+        // Normalise to unspecified kind so DayOfWeek is always local calendar day
+        var localDate = DateTime.SpecifyKind(appointmentDate, DateTimeKind.Unspecified);
 
+        if (!doctor.AvailableDays.Contains(localDate.DayOfWeek))
+            return (false, $"{doctor.FullName} does not work on {localDate.DayOfWeek}s. " +
+                           $"Available: {string.Join(", ", doctor.AvailableDays)}.", null);
+
+        // Check appointment is within doctor's working hours
+        if (localDate.TimeOfDay < doctor.WorkStartTime || localDate.TimeOfDay >= doctor.WorkEndTime)
+            return (false, $"{doctor.FullName} works {doctor.WorkStartTime:hh\\:mm}–{doctor.WorkEndTime:hh\\:mm}. " +
+                           $"Please choose a time within those hours.", null);
+
+        // Check 30-minute slot conflict
         bool conflict = _db.Appointments.AsEnumerable().Any(a =>
             a.DoctorId == doctorId &&
             a.Status != AppointmentStatus.Cancelled &&
             a.Status != AppointmentStatus.Completed &&
-            Math.Abs((a.AppointmentDate - appointmentDate).TotalMinutes) < 30);
+            Math.Abs((a.AppointmentDate - localDate).TotalMinutes) < 30);
 
-        if (conflict) return (false, "That time slot is already booked for this doctor.", null);
+        if (conflict) return (false, "That time slot is already booked for this doctor. Please choose a different time.", null);
 
         var appointment = new Appointment
         {
             PatientId = patientId, DoctorId = doctorId,
-            AppointmentDate = appointmentDate, Reason = reason, Notes = notes,
+            AppointmentDate = localDate, Reason = reason, Notes = notes,
             PatientName = patient.FullName, DoctorName = doctor.FullName,
             CreatedAt = DateTime.Now
         };

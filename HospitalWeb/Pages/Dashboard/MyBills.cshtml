@@ -1,0 +1,98 @@
+@page
+@model HospitalWeb.Pages.Dashboard.MyBillsModel
+@using HospitalWeb.Models
+@{ ViewData["Title"] = "My Bills"; ViewData["Page"] = "PatientDashboard"; }
+
+<div class="page-header">
+    <h2><i class="fa-solid fa-file-invoice-dollar me-2"></i>My Bills</h2>
+    <a href="/Dashboard/Index" class="btn btn-outline-secondary">← Dashboard</a>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-6">
+        <div class="stat-card">
+            <div class="stat-icon green"><i class="fa-solid fa-circle-check"></i></div>
+            <div class="stat-info">
+                <div class="stat-value">UGX @Model.TotalPaid.ToString("N0")</div>
+                <div class="stat-label">Total Paid</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="stat-card">
+            <div class="stat-icon @(Model.TotalOutstanding > 0 ? "red" : "green")">
+                <i class="fa-solid fa-file-invoice-dollar"></i>
+            </div>
+            <div class="stat-info">
+                <div class="stat-value">UGX @Model.TotalOutstanding.ToString("N0")</div>
+                <div class="stat-label">Outstanding Balance</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (!Model.Bills.Any())
+{
+    <div class="card">
+        <div class="empty-state">
+            <div class="empty-icon"><i class="fa-solid fa-file-circle-xmark"></i></div>
+            <p>No bills found.</p>
+        </div>
+    </div>
+}
+else
+{
+    @foreach (var b in Model.Bills)
+    {
+        <div class="card mb-3">
+            <div class="card-header">
+                <div>
+                    <h6 class="mb-0 fw-bold">Bill #@b.Id</h6>
+                    <small class="text-muted">Issued: @b.BillDate.ToString("MMM dd, yyyy") &nbsp;•&nbsp; Due: @b.DueDate.ToString("MMM dd, yyyy")</small>
+                </div>
+                <span class="badge @GetBillBadge(b.Status)">@b.Status</span>
+            </div>
+            <div class="card-body">
+                <table class="table table-sm mb-3">
+                    <thead class="table-light">
+                        <tr><th>Description</th><th>Qty</th><th>Unit Price</th><th>Total</th></tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var item in b.Items)
+                    {
+                        <tr>
+                            <td>@item.Description</td>
+                            <td>@item.Quantity</td>
+                            <td>UGX @item.UnitPrice.ToString("N0")</td>
+                            <td>UGX @item.Total.ToString("N0")</td>
+                        </tr>
+                    }
+                    </tbody>
+                    <tfoot>
+                        <tr class="table-light"><td colspan="3" class="text-end fw-semibold">Subtotal</td><td>UGX @b.SubTotal.ToString("N0")</td></tr>
+                        <tr><td colspan="3" class="text-end text-muted">Tax (@((b.TaxRate * 100).ToString("F0"))%)</td><td>UGX @b.Tax.ToString("N0")</td></tr>
+                        <tr class="fw-bold"><td colspan="3" class="text-end">Total</td><td>UGX @b.TotalAmount.ToString("N0")</td></tr>
+                        <tr class="text-success"><td colspan="3" class="text-end">Paid</td><td>UGX @b.AmountPaid.ToString("N0")</td></tr>
+                        <tr class="@(b.Balance > 0 ? "text-danger" : "text-success") fw-bold">
+                            <td colspan="3" class="text-end">Balance</td><td>UGX @b.Balance.ToString("N0")</td>
+                        </tr>
+                    </tfoot>
+                </table>
+                @if (!string.IsNullOrEmpty(b.InsuranceProvider))
+                {
+                    <small class="text-muted">Insurance: @b.InsuranceProvider (@b.InsurancePolicyNumber) — Coverage: UGX @b.InsuranceCoverage.ToString("N0")</small>
+                }
+            </div>
+        </div>
+    }
+}
+
+@functions {
+    string GetBillBadge(BillStatus s) => s switch {
+        BillStatus.Paid          => "bg-success text-white",
+        BillStatus.PartiallyPaid => "bg-warning text-dark",
+        BillStatus.Overdue       => "bg-danger text-white",
+        BillStatus.Cancelled     => "bg-secondary text-white",
+        _                        => "bg-light text-dark border"
+    };
+}

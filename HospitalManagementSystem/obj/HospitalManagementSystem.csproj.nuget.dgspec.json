@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\user\\Desktop\\jk\\HospitalManagementSystem\\HospitalManagementSystem.csproj": {}
+    "C:\\Users\\user\\Desktop\\Hospital\\HospitalManagementSystem\\HospitalManagementSystem.csproj": {}
   },
   "projects": {
-    "C:\\Users\\user\\Desktop\\jk\\HospitalManagementSystem\\HospitalManagementSystem.csproj": {
+    "C:\\Users\\user\\Desktop\\Hospital\\HospitalManagementSystem\\HospitalManagementSystem.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\user\\Desktop\\jk\\HospitalManagementSystem\\HospitalManagementSystem.csproj",
+        "projectUniqueName": "C:\\Users\\user\\Desktop\\Hospital\\HospitalManagementSystem\\HospitalManagementSystem.csproj",
         "projectName": "HospitalManagementSystem",
-        "projectPath": "C:\\Users\\user\\Desktop\\jk\\HospitalManagementSystem\\HospitalManagementSystem.csproj",
+        "projectPath": "C:\\Users\\user\\Desktop\\Hospital\\HospitalManagementSystem\\HospitalManagementSystem.csproj",
         "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\user\\Desktop\\jk\\HospitalManagementSystem\\obj\\",
+        "outputPath": "C:\\Users\\user\\Desktop\\Hospital\\HospitalManagementSystem\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

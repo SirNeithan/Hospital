@@ -1,0 +1,101 @@
+@page
+@model HospitalWeb.Pages.Dashboard.ProfileModel
+@{ ViewData["Title"] = "My Profile"; ViewData["Page"] = "PatientDashboard"; }
+
+<div class="page-header">
+    <h2><i class="fa-solid fa-user-pen me-2"></i>My Profile</h2>
+    <a href="/Dashboard/Index" class="btn btn-outline-secondary">← Dashboard</a>
+</div>
+
+@if (!string.IsNullOrEmpty(Model.SuccessMessage))
+{
+    <div class="alert alert-success alert-dismissible fade show"><i class="fa-solid fa-circle-check me-2"></i>@Model.SuccessMessage<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>
+}
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div class="alert alert-danger"><i class="fa-solid fa-circle-exclamation me-2"></i>@Model.ErrorMessage</div>
+}
+
+<div class="row g-4">
+    <div class="col-lg-7">
+        <div class="card">
+            <div class="card-header"><h5>Contact Information</h5></div>
+            <div class="card-body">
+                <form method="post" asp-page-handler="UpdateProfile">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Phone Number</label>
+                            <input asp-for="PhoneNumber" class="form-control" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Email</label>
+                            <input asp-for="Email" class="form-control" />
+                            <span asp-validation-for="Email" class="text-danger small"></span>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label fw-semibold">Address</label>
+                            <input asp-for="Address" class="form-control" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Emergency Contact Name</label>
+                            <input asp-for="EmergencyContactName" class="form-control" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Emergency Contact Phone</label>
+                            <input asp-for="EmergencyContactPhone" class="form-control" />
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-3">Save Changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-5 d-flex flex-column gap-4">
+        <!-- Read-only medical info -->
+        @if (Model.CurrentPatient != null)
+        {
+            <div class="card">
+                <div class="card-header"><h5>Medical Information</h5></div>
+                <div class="card-body">
+                    <div class="row g-2">
+                        <div class="col-6"><span class="text-muted small">Full Name</span><br><strong>@Model.CurrentPatient.FullName</strong></div>
+                        <div class="col-6"><span class="text-muted small">Date of Birth</span><br><strong>@Model.CurrentPatient.DateOfBirth.ToString("MMM dd, yyyy")</strong></div>
+                        <div class="col-6"><span class="text-muted small">Age</span><br><strong>@Model.CurrentPatient.Age years</strong></div>
+                        <div class="col-6"><span class="text-muted small">Gender</span><br><strong>@Model.CurrentPatient.Gender</strong></div>
+                        <div class="col-6"><span class="text-muted small">Blood Type</span><br><strong>@Model.CurrentPatient.BloodType</strong></div>
+                        <div class="col-6"><span class="text-muted small">Status</span><br>
+                            <span class="badge @(Model.CurrentPatient.IsAdmitted ? "badge-admitted" : "badge-outpatient")">
+                                @(Model.CurrentPatient.IsAdmitted ? "Admitted" : "Outpatient")
+                            </span>
+                        </div>
+                    </div>
+                    <small class="text-muted mt-2 d-block">Medical details can only be updated by hospital staff.</small>
+                </div>
+            </div>
+        }
+
+        <!-- Password change -->
+        <div class="card">
+            <div class="card-header"><h5><i class="fa-solid fa-lock me-2"></i>Change Password</h5></div>
+            <div class="card-body">
+                <form method="post" asp-page-handler="ChangePassword">
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Current Password</label>
+                        <input asp-for="CurrentPassword" class="form-control" placeholder="Your current password" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">New Password</label>
+                        <input asp-for="NewPassword" class="form-control" placeholder="Min 6 characters" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Confirm New Password</label>
+                        <input asp-for="ConfirmNewPassword" class="form-control" />
+                        <span asp-validation-for="ConfirmNewPassword" class="text-danger small"></span>
+                    </div>
+                    <button type="submit" class="btn btn-outline-primary">Update Password</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

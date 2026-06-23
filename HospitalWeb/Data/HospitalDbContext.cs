@@ -13,6 +13,7 @@ public class HospitalDbContext : DbContext
     public DbSet<Room> Rooms => Set<Room>();
     public DbSet<MedicalRecord> MedicalRecords => Set<MedicalRecord>();
     public DbSet<Bill> Bills => Set<Bill>();
+    public DbSet<AppUser> AppUsers => Set<AppUser>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -97,6 +98,18 @@ public class HospitalDbContext : DbContext
             e.Property(b => b.InsurancePolicyNumber).HasMaxLength(100);
             e.Property(b => b.Items)
              .HasColumnType("jsonb");
+        });
+
+        // AppUser
+        modelBuilder.Entity<AppUser>(e =>
+        {
+            e.HasKey(u => u.Id);
+            e.Property(u => u.Username).IsRequired().HasMaxLength(100);
+            e.HasIndex(u => u.Username).IsUnique();
+            e.Property(u => u.PasswordHash).IsRequired();
+            e.Property(u => u.Role).HasConversion<string>();
+            e.Property(u => u.FullName).HasMaxLength(200);
+            e.Property(u => u.Email).HasMaxLength(150);
         });
     }
 }

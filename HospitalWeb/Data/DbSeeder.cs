@@ -1,3 +1,4 @@
+using BCrypt.Net;
 using HospitalWeb.Models;
 
 namespace HospitalWeb.Data;
@@ -10,6 +11,31 @@ public class DbSeeder
 
     public void Seed()
     {
+        // ── Admin accounts (hospital-issued credentials) ──────────────────────
+        if (!_db.AppUsers.Any(u => u.Role == UserRole.Admin))
+        {
+            _db.AppUsers.AddRange(new List<AppUser>
+            {
+                new() {
+                    Username     = "admin",
+                    PasswordHash = BCrypt.Net.BCrypt.HashPassword("Admin@123"),
+                    Role         = UserRole.Admin,
+                    FullName     = "System Administrator",
+                    Email        = "admin@cityhospital.co.ug",
+                    CreatedAt    = DateTime.UtcNow
+                },
+                new() {
+                    Username     = "reception",
+                    PasswordHash = BCrypt.Net.BCrypt.HashPassword("Recep@456"),
+                    Role         = UserRole.Admin,
+                    FullName     = "Front Desk Reception",
+                    Email        = "reception@cityhospital.co.ug",
+                    CreatedAt    = DateTime.UtcNow
+                }
+            });
+            _db.SaveChanges();
+        }
+
         // Doctors
         var doctors = new List<Doctor>
         {
@@ -113,5 +139,33 @@ public class DbSeeder
         };
         _db.Patients.AddRange(patients);
         _db.SaveChanges();
+    }
+
+    /// <summary>Ensures admin accounts exist without touching other data.</summary>
+    public void SeedAdminsOnly()
+    {
+        if (!_db.AppUsers.Any(u => u.Role == UserRole.Admin))
+        {
+            _db.AppUsers.AddRange(new List<AppUser>
+            {
+                new() {
+                    Username     = "admin",
+                    PasswordHash = BCrypt.Net.BCrypt.HashPassword("Admin@123"),
+                    Role         = UserRole.Admin,
+                    FullName     = "System Administrator",
+                    Email        = "admin@cityhospital.co.ug",
+                    CreatedAt    = DateTime.UtcNow
+                },
+                new() {
+                    Username     = "reception",
+                    PasswordHash = BCrypt.Net.BCrypt.HashPassword("Recep@456"),
+                    Role         = UserRole.Admin,
+                    FullName     = "Front Desk Reception",
+                    Email        = "reception@cityhospital.co.ug",
+                    CreatedAt    = DateTime.UtcNow
+                }
+            });
+            _db.SaveChanges();
+        }
     }
 }
