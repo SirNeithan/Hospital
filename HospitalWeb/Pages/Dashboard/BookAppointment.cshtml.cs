@@ -1,3 +1,4 @@
+using HospitalManagement.Core;
 using HospitalManagement.Data;
 using HospitalManagement.Core.Models;
 using HospitalManagement.Services;
@@ -8,7 +9,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace HospitalWeb.Pages.Dashboard;
 
-[Authorize(Roles = "Patient")]
+[Authorize(Policy = "PatientOnly")]
 public class BookAppointmentModel : PageModel
 {
     private readonly HospitalDbContext _db;
@@ -66,9 +67,5 @@ public class BookAppointmentModel : PageModel
     private void LoadDoctors() =>
         Doctors = _db.Doctors.Where(d => d.IsAvailable).OrderBy(d => d.Specialization).ToList();
 
-    private int? GetPatientId()
-    {
-        var claim = User.FindFirst("PatientId")?.Value;
-        return int.TryParse(claim, out int id) && id > 0 ? id : null;
-    }
+    private int? GetPatientId() => User.GetPatientId();
 }

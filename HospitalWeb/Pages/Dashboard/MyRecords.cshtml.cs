@@ -1,3 +1,4 @@
+using HospitalManagement.Core;
 using HospitalManagement.Data;
 using HospitalManagement.Core.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -5,7 +6,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace HospitalWeb.Pages.Dashboard;
 
-[Authorize(Roles = "Patient")]
+[Authorize(Policy = "PatientOnly")]
 public class MyRecordsModel : PageModel
 {
     private readonly HospitalDbContext _db;
@@ -16,14 +17,12 @@ public class MyRecordsModel : PageModel
 
     public void OnGet()
     {
-        var claim = User.FindFirst("PatientId")?.Value;
-        if (!int.TryParse(claim, out int patientId)) return;
+        var patientId = User.GetPatientId();
+        if (patientId == null) return;
 
-        var patient = _db.Patients.Find(patientId);
-        PatientName = patient?.FullName ?? "";
-
+        PatientName = _db.Patients.Find(patientId.Value)?.FullName ?? "";
         Records = _db.MedicalRecords
-            .Where(r => r.PatientId == patientId)
+            .Where(r => r.PatientId == patientId.Value)
             .OrderByDescending(r => r.RecordDate)
             .ToList();
     }

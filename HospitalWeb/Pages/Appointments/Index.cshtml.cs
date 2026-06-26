@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace HospitalWeb.Pages.Appointments;
 
-[Authorize(Roles = "Admin")]
+[Authorize(Policy = "AdminOnly")]
 public class IndexModel : PageModel
 {
     private readonly AppointmentService _appts;

@@ -13,7 +13,8 @@ public class HospitalDbContext : DbContext
     public DbSet<Room> Rooms => Set<Room>();
     public DbSet<MedicalRecord> MedicalRecords => Set<MedicalRecord>();
     public DbSet<Bill> Bills => Set<Bill>();
-    public DbSet<AppUser> AppUsers => Set<AppUser>();
+    public DbSet<AppUser>   AppUsers   => Set<AppUser>();
+    public DbSet<AuditLog>  AuditLogs  => Set<AuditLog>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -110,6 +111,22 @@ public class HospitalDbContext : DbContext
             e.Property(u => u.Role).HasConversion<string>();
             e.Property(u => u.FullName).HasMaxLength(200);
             e.Property(u => u.Email).HasMaxLength(150);
+        });
+
+        // AuditLog
+        modelBuilder.Entity<AuditLog>(e =>
+        {
+            e.HasKey(a => a.Id);
+            e.Property(a => a.Method).HasMaxLength(10);
+            e.Property(a => a.Path).HasMaxLength(500);
+            e.Property(a => a.QueryString).HasMaxLength(1000);
+            e.Property(a => a.Username).HasMaxLength(100);
+            e.Property(a => a.Role).HasMaxLength(50);
+            e.Property(a => a.IpAddress).HasMaxLength(50);
+            e.Property(a => a.UserAgent).HasMaxLength(500);
+            // Index for fast admin queries
+            e.HasIndex(a => a.Timestamp);
+            e.HasIndex(a => a.UserId);
         });
     }
 }

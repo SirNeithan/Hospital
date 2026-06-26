@@ -49,6 +49,9 @@
             <a href="/Admin/Users" class="@(ViewData["Page"]?.ToString() == "Admin" ? "active" : "")">
                 <span class="nav-icon"><i class="fa-solid fa-users-gear"></i></span> User Management
             </a>
+            <a href="/Admin/AuditLogs" class="@(ViewData["Page"]?.ToString() == "AuditLogs" ? "active" : "")">
+                <span class="nav-icon"><i class="fa-solid fa-shield-halved"></i></span> Audit Logs
+            </a>
         }
         else
         {

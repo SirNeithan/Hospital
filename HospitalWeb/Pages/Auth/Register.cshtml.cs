@@ -1,3 +1,4 @@
+using HospitalManagement.Core;
 using HospitalManagement.Core.Models;
 using HospitalManagement.Services;
 using Microsoft.AspNetCore.Authentication;
@@ -44,14 +45,15 @@ public class RegisterModel : PageModel
 
         if (!success) { ErrorMessage = message; return Page(); }
 
-        // Auto-login after registration
         var claims = new List<Claim>
         {
-            new(ClaimTypes.NameIdentifier, user!.Id.ToString()),
-            new(ClaimTypes.Name,           user.Username),
-            new(ClaimTypes.Role,           user.Role.ToString()),
-            new("FullName",                user.FullName),
-            new("PatientId",               user.PatientId?.ToString() ?? ""),
+            new(ClaimTypes.NameIdentifier,                   user!.Id.ToString()),
+            new(ClaimTypes.Name,                             user.Username),
+            new(ClaimTypes.Role,                             user.Role.ToString()),
+            new(ClaimTypes.Email,                            user.Email),
+            new(ClaimsPrincipalExtensions.FullNameClaim,     user.FullName),
+            new(ClaimsPrincipalExtensions.PatientIdClaim,    user.PatientId?.ToString() ?? ""),
+            new(ClaimsPrincipalExtensions.AuditIdClaim,      Guid.NewGuid().ToString("N")),
         };
         var identity  = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
         var principal = new ClaimsPrincipal(identity);

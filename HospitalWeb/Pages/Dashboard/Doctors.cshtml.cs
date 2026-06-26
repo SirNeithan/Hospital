@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace HospitalWeb.Pages.Dashboard;
 
-[Authorize(Roles = "Patient")]
+[Authorize(Policy = "PatientOnly")]
 public class DoctorsModel : PageModel
 {
     private readonly HospitalDbContext _db;

@@ -1,0 +1,180 @@
+@page
+@model HospitalWeb.Pages.Admin.AuditLogsModel
+@{ ViewData["Title"] = "Audit Logs"; ViewData["Page"] = "Admin"; }
+
+<div class="page-header">
+    <h2><i class="fa-solid fa-shield-halved me-2"></i>Audit Logs</h2>
+    <form method="post" asp-page-handler="Clear"
+          onsubmit="return confirm('Clear all entries older than 7 days?')">
+        <button class="btn btn-outline-danger btn-sm">
+            <i class="fa-solid fa-trash me-1"></i>Clear Old Logs
+        </button>
+    </form>
+</div>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show">
+        <i class="fa-solid fa-circle-check me-2"></i>@TempData["Success"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<!-- Stats row -->
+<div class="stat-grid mb-4">
+    <div class="stat-card">
+        <div class="stat-icon blue"><i class="fa-solid fa-arrow-pointer"></i></div>
+        <div class="stat-info">
+            <div class="stat-value">@Model.TodayRequests</div>
+            <div class="stat-label">Requests Today</div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon teal"><i class="fa-solid fa-users"></i></div>
+        <div class="stat-info">
+            <div class="stat-value">@Model.UniqueUsersToday</div>
+            <div class="stat-label">Active Users Today</div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon yellow"><i class="fa-solid fa-gauge"></i></div>
+        <div class="stat-info">
+            <div class="stat-value">@Model.AvgDurationMs.ToString("F0") ms</div>
+            <div class="stat-label">Avg Response Time</div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon red"><i class="fa-solid fa-circle-exclamation"></i></div>
+        <div class="stat-info">
+            <div class="stat-value">@Model.ErrorCount</div>
+            <div class="stat-label">Errors Today (4xx/5xx)</div>
+        </div>
+    </div>
+</div>
+
+<!-- Filter bar -->
+<div class="card mb-3">
+    <div class="card-body">
+        <form method="get" class="row g-3 align-items-end">
+            <div class="col-md-4">
+                <label class="form-label fw-semibold">Filter by User</label>
+                <input type="text" name="FilterUser" value="@Model.FilterUser"
+                       class="form-control" placeholder="Username…" />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label fw-semibold">HTTP Method</label>
+                <select name="FilterMethod" class="form-select">
+                    <option value="">All</option>
+                    @foreach (var m in new[]{"GET","POST","PUT","DELETE"})
+                    {
+                        <option value="@m" selected="@(Model.FilterMethod==m)">@m</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-3">
+                <button class="btn btn-primary me-2">Filter</button>
+                <a href="/Admin/AuditLogs" class="btn btn-outline-secondary">Clear</a>
+            </div>
+            <div class="col-md-2 text-end">
+                <small class="text-muted">@Model.TotalCount total entries</small>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Log table -->
+<div class="card">
+    <div class="card-body p-0">
+        @if (!Model.Logs.Any())
+        {
+            <div class="empty-state">
+                <div class="empty-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                <p>No audit log entries found.</p>
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-sm mb-0" style="font-size:.82rem">
+                    <thead>
+                        <tr>
+                            <th>Timestamp</th>
+                            <th>User</th>
+                            <th>Role</th>
+                            <th>Method</th>
+                            <th>Path</th>
+                            <th>Status</th>
+                            <th>Duration</th>
+                            <th>IP</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var log in Model.Logs)
+                    {
+                        <tr class="@(log.StatusCode >= 500 ? "table-danger" : log.StatusCode >= 400 ? "table-warning" : "")">
+                            <td class="text-nowrap">
+                                <small class="text-muted">@log.Timestamp.ToString("MM/dd HH:mm:ss")</small>
+                            </td>
+                            <td>
+                                @if (log.Username != null)
+                                { <span class="fw-semibold">@log.Username</span> }
+                                else
+                                { <span class="text-muted">anonymous</span> }
+                            </td>
+                            <td>
+                                @if (log.Role != null)
+                                {
+                                    <span class="badge @(log.Role == "Admin" ? "bg-primary" : "bg-success")">@log.Role</span>
+                                }
+                            </td>
+                            <td>
+                                <span class="badge @(log.Method == "GET" ? "bg-light text-dark border" :
+                                                     log.Method == "POST" ? "bg-success text-white" : "bg-warning text-dark")">
+                                    @log.Method
+                                </span>
+                            </td>
+                            <td class="text-truncate" style="max-width:220px" title="@log.Path@log.QueryString">
+                                @log.Path@(log.QueryString != null ? $"?{log.QueryString[1..]}" : "")
+                            </td>
+                            <td>
+                                <span class="@(log.StatusCode >= 500 ? "text-danger fw-bold" :
+                                               log.StatusCode >= 400 ? "text-warning fw-bold" :
+                                               log.StatusCode >= 300 ? "text-info" : "text-success")">
+                                    @log.StatusCode
+                                </span>
+                            </td>
+                            <td class="@(log.DurationMs > 1000 ? "text-warning" : "")">
+                                @log.DurationMs ms
+                            </td>
+                            <td><small class="text-muted">@log.IpAddress</small></td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            @if (Model.TotalPages > 1)
+            {
+                <div class="d-flex justify-content-between align-items-center p-3 border-top">
+                    <small class="text-muted">
+                        Page @Model.CurrentPage of @Model.TotalPages
+                        (@Model.TotalCount entries)
+                    </small>
+                    <div class="d-flex gap-2">
+                        @if (Model.CurrentPage > 1)
+                        {
+                            <a href="?CurrentPage=@(Model.CurrentPage-1)&FilterUser=@Model.FilterUser&FilterMethod=@Model.FilterMethod"
+                               class="btn btn-sm btn-outline-secondary">← Prev</a>
+                        }
+                        @if (Model.CurrentPage < Model.TotalPages)
+                        {
+                            <a href="?CurrentPage=@(Model.CurrentPage+1)&FilterUser=@Model.FilterUser&FilterMethod=@Model.FilterMethod"
+                               class="btn btn-sm btn-outline-secondary">Next →</a>
+                        }
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>

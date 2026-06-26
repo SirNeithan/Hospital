@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace HospitalWeb.Pages;
 
-[Authorize(Roles = "Admin")]
+[Authorize(Policy = "AdminOnly")]
 public class IndexModel : PageModel
 {
     private readonly HospitalDbContext _db;

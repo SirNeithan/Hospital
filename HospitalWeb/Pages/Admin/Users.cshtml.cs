@@ -1,3 +1,4 @@
+using HospitalManagement.Core;
 using HospitalManagement.Core.Models;
 using HospitalManagement.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -7,7 +8,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace HospitalWeb.Pages.Admin;
 
-[Authorize(Roles = "Admin")]
+[Authorize(Policy = "AdminOnly")]
 public class UsersModel : PageModel
 {
     private readonly AuthService _auth;
@@ -36,8 +37,7 @@ public class UsersModel : PageModel
 
     public IActionResult OnPostToggle(int id)
     {
-        // Prevent admins from deactivating themselves
-        var selfId = int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)!.Value);
+        var selfId = User.GetUserId();
         if (id == selfId)
         {
             TempData["Error"] = "You cannot deactivate your own account.";

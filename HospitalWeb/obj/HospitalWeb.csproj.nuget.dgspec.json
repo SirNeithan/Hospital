@@ -1,7 +1,7 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\user\\Desktop\\Hospital\\hospitalweb\\HospitalWeb.csproj": {}
+    "C:\\Users\\user\\Desktop\\Hospital\\HospitalWeb\\HospitalWeb.csproj": {}
   },
   "projects": {
     "C:\\Users\\user\\Desktop\\Hospital\\HospitalManagement.Core\\HospitalManagement.Core.csproj": {
@@ -1064,14 +1064,14 @@
         }
       }
     },
-    "C:\\Users\\user\\Desktop\\Hospital\\hospitalweb\\HospitalWeb.csproj": {
+    "C:\\Users\\user\\Desktop\\Hospital\\HospitalWeb\\HospitalWeb.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\user\\Desktop\\Hospital\\hospitalweb\\HospitalWeb.csproj",
+        "projectUniqueName": "C:\\Users\\user\\Desktop\\Hospital\\HospitalWeb\\HospitalWeb.csproj",
         "projectName": "HospitalWeb",
-        "projectPath": "C:\\Users\\user\\Desktop\\Hospital\\hospitalweb\\HospitalWeb.csproj",
+        "projectPath": "C:\\Users\\user\\Desktop\\Hospital\\HospitalWeb\\HospitalWeb.csproj",
         "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\user\\Desktop\\Hospital\\hospitalweb\\obj\\",
+        "outputPath": "C:\\Users\\user\\Desktop\\Hospital\\HospitalWeb\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

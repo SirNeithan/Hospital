@@ -1,3 +1,4 @@
+using HospitalManagement.Core;
 using HospitalManagement.Data;
 using HospitalManagement.Core.Models;
 using HospitalManagement.Services;
@@ -6,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace HospitalWeb.Pages.Dashboard;
 
-[Authorize(Roles = "Patient")]
+[Authorize(Policy = "PatientOnly")]
 public class IndexModel : PageModel
 {
     private readonly HospitalDbContext _db;
@@ -27,13 +28,13 @@ public class IndexModel : PageModel
 
     public void OnGet()
     {
-        var patientIdClaim = User.FindFirst("PatientId")?.Value;
-        if (!int.TryParse(patientIdClaim, out int patientId)) return;
+        var patientId = User.GetPatientId();
+        if (patientId == null) return;
 
-        CurrentPatient = _db.Patients.Find(patientId);
+        CurrentPatient = _db.Patients.Find(patientId.Value);
         if (CurrentPatient == null) return;
 
-        var allAppts = _appts.GetByPatient(patientId);
+        var allAppts = _appts.GetByPatient(patientId.Value);
         UpcomingAppointments = allAppts
             .Where(a => a.AppointmentDate >= DateTime.Now
                      && a.Status != AppointmentStatus.Cancelled
@@ -48,11 +49,11 @@ public class IndexModel : PageModel
         TotalAppointments = allAppts.Count;
 
         RecentRecords = _db.MedicalRecords
-            .Where(r => r.PatientId == patientId)
+            .Where(r => r.PatientId == patientId.Value)
             .OrderByDescending(r => r.RecordDate)
             .Take(3).ToList();
 
-        var bills = _billing.GetByPatient(patientId);
+        var bills = _billing.GetByPatient(patientId.Value);
         RecentBills = bills.Take(3).ToList();
         OutstandingBalance = bills
             .Where(b => b.Status != BillStatus.Paid && b.Status != BillStatus.Cancelled)

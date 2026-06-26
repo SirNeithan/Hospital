@@ -1,3 +1,4 @@
+using HospitalManagement.Core;
 using HospitalManagement.Core.Models;
 using HospitalManagement.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -5,7 +6,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace HospitalWeb.Pages.Dashboard;
 
-[Authorize(Roles = "Patient")]
+[Authorize(Policy = "PatientOnly")]
 public class MyBillsModel : PageModel
 {
     private readonly BillingService _billing;
@@ -17,10 +18,10 @@ public class MyBillsModel : PageModel
 
     public void OnGet()
     {
-        var claim = User.FindFirst("PatientId")?.Value;
-        if (!int.TryParse(claim, out int patientId)) return;
+        var patientId = User.GetPatientId();
+        if (patientId == null) return;
 
-        Bills = _billing.GetByPatient(patientId);
+        Bills = _billing.GetByPatient(patientId.Value);
         TotalPaid        = Bills.Sum(b => b.AmountPaid);
         TotalOutstanding = Bills
             .Where(b => b.Status != BillStatus.Paid && b.Status != BillStatus.Cancelled)

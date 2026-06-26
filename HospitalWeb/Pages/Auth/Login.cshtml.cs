@@ -1,3 +1,4 @@
+using HospitalManagement.Core;
 using HospitalManagement.Core.Models;
 using HospitalManagement.Services;
 using Microsoft.AspNetCore.Authentication;
@@ -21,7 +22,6 @@ public class LoginModel : PageModel
 
     public IActionResult OnGet(string? returnUrl = null)
     {
-        // Already logged in → redirect away
         if (User.Identity?.IsAuthenticated == true)
             return RedirectBasedOnRole();
         ViewData["ReturnUrl"] = returnUrl;
@@ -41,11 +41,15 @@ public class LoginModel : PageModel
 
         var claims = new List<Claim>
         {
-            new(ClaimTypes.NameIdentifier, user.Id.ToString()),
-            new(ClaimTypes.Name,           user.Username),
-            new(ClaimTypes.Role,           user.Role.ToString()),
-            new("FullName",                user.FullName),
-            new("PatientId",               user.PatientId?.ToString() ?? ""),
+            new(ClaimTypes.NameIdentifier,          user.Id.ToString()),
+            new(ClaimTypes.Name,                    user.Username),
+            new(ClaimTypes.Role,                    user.Role.ToString()),
+            new(ClaimTypes.Email,                   user.Email),
+            new(ClaimsPrincipalExtensions.FullNameClaim,  user.FullName),
+            new(ClaimsPrincipalExtensions.PatientIdClaim, user.PatientId?.ToString() ?? ""),
+            // Unique session token — used by audit trail to correlate all
+            // requests from the same login session
+            new(ClaimsPrincipalExtensions.AuditIdClaim, Guid.NewGuid().ToString("N")),
         };
 
         var identity  = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -69,7 +73,7 @@ public class LoginModel : PageModel
     }
 
     private IActionResult RedirectBasedOnRole() =>
-        User.IsInRole("Admin")
+        User.IsAdmin()
             ? RedirectToPage("/Index")
             : RedirectToPage("/Dashboard/Index");
 }

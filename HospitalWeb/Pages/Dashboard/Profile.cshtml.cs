@@ -1,3 +1,4 @@
+using HospitalManagement.Core;
 using HospitalManagement.Data;
 using HospitalManagement.Core.Models;
 using HospitalManagement.Services;
@@ -8,7 +9,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace HospitalWeb.Pages.Dashboard;
 
-[Authorize(Roles = "Patient")]
+[Authorize(Policy = "PatientOnly")]
 public class ProfileModel : PageModel
 {
     private readonly HospitalDbContext _db;
@@ -19,14 +20,12 @@ public class ProfileModel : PageModel
     public string? SuccessMessage { get; set; }
     public string? ErrorMessage { get; set; }
 
-    // Profile fields
     [BindProperty] public string PhoneNumber { get; set; } = "";
     [BindProperty][EmailAddress] public string Email { get; set; } = "";
     [BindProperty] public string Address { get; set; } = "";
     [BindProperty] public string EmergencyContactName { get; set; } = "";
     [BindProperty] public string EmergencyContactPhone { get; set; } = "";
 
-    // Password change fields
     [BindProperty][DataType(DataType.Password)] public string? CurrentPassword { get; set; }
     [BindProperty][DataType(DataType.Password)][MinLength(6)] public string? NewPassword { get; set; }
     [BindProperty][DataType(DataType.Password)][Compare("NewPassword")] public string? ConfirmNewPassword { get; set; }
@@ -48,14 +47,12 @@ public class ProfileModel : PageModel
     {
         LoadPatient();
         if (CurrentPatient == null) return Page();
-
         CurrentPatient.PhoneNumber           = PhoneNumber;
         CurrentPatient.Email                 = Email;
         CurrentPatient.Address               = Address;
         CurrentPatient.EmergencyContactName  = EmergencyContactName;
         CurrentPatient.EmergencyContactPhone = EmergencyContactPhone;
         _db.SaveChanges();
-
         SuccessMessage = "Profile updated successfully.";
         return Page();
     }
@@ -63,13 +60,14 @@ public class ProfileModel : PageModel
     public IActionResult OnPostChangePassword()
     {
         LoadPatient();
-        var userId = int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)!.Value);
+        var userId = User.GetUserId();
+        if (userId == null) return RedirectToPage("/Auth/Login");
         if (string.IsNullOrEmpty(CurrentPassword) || string.IsNullOrEmpty(NewPassword))
         {
             ErrorMessage = "Please fill in all password fields.";
             return Page();
         }
-        var (success, message) = _auth.ChangePassword(userId, CurrentPassword, NewPassword);
+        var (success, message) = _auth.ChangePassword(userId.Value, CurrentPassword, NewPassword);
         if (success) SuccessMessage = message;
         else ErrorMessage = message;
         return Page();
@@ -77,7 +75,7 @@ public class ProfileModel : PageModel
 
     private void LoadPatient()
     {
-        var claim = User.FindFirst("PatientId")?.Value;
-        if (int.TryParse(claim, out int id)) CurrentPatient = _db.Patients.Find(id);
+        var patientId = User.GetPatientId();
+        if (patientId != null) CurrentPatient = _db.Patients.Find(patientId.Value);
     }
 }
