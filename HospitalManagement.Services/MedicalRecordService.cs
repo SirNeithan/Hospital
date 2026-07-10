@@ -46,4 +46,18 @@ public class MedicalRecordService
 
     public List<MedicalRecord> GetAll() =>
         _db.MedicalRecords.OrderByDescending(r => r.RecordDate).ToList();
+
+    /// <summary>Returns a queryable for paginated list views, optionally filtered by patient name.</summary>
+    public IQueryable<MedicalRecord> Query(string? search = null)
+    {
+        var q = _db.MedicalRecords.AsQueryable();
+        if (!string.IsNullOrWhiteSpace(search))
+        {
+            var s = search.ToLower();
+            q = q.Where(r => r.PatientName.ToLower().Contains(s) ||
+                              r.DoctorName.ToLower().Contains(s)  ||
+                              r.Diagnosis.ToLower().Contains(s));
+        }
+        return q.OrderByDescending(r => r.RecordDate);
+    }
 }

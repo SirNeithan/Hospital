@@ -1,7 +1,8 @@
+using Microsoft.AspNetCore.Mvc;
+using HospitalManagement.Core;
 using HospitalManagement.Core.Models;
 using HospitalManagement.Services;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace HospitalWeb.Pages.Billing;
@@ -13,19 +14,20 @@ public class IndexModel : PageModel
     public IndexModel(BillingService billing) => _billing = billing;
 
     [BindProperty(SupportsGet = true)] public string Filter { get; set; } = "all";
+    [BindProperty(SupportsGet = true)] public int PageNumber { get; set; } = 1;
+    public const int PageSize = 15;
 
-    public List<Bill> Bills { get; set; } = new();
+    public PagedResult<Bill> Bills { get; set; } = null!;
     public decimal TotalRevenue { get; set; }
     public decimal Outstanding { get; set; }
 
     public void OnGet()
     {
-        Bills = Filter switch
-        {
-            "unpaid" => _billing.GetUnpaid(),
-            _        => _billing.GetAll().OrderByDescending(b => b.BillDate).ToList()
-        };
+        Bills = PagedResult<Bill>.Create(
+            _billing.Query(Filter),
+            PageNumber, PageSize);
+
         TotalRevenue = _billing.GetTotalRevenue();
-        Outstanding = _billing.GetOutstandingBalance();
+        Outstanding  = _billing.GetOutstandingBalance();
     }
 }

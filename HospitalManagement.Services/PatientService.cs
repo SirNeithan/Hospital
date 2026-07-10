@@ -31,6 +31,26 @@ public class PatientService
 
     public List<Patient> GetAll() => _db.Patients.OrderByDescending(p => p.RegistrationDate).ToList();
 
+    /// <summary>Returns a queryable so the caller can paginate/filter before hitting the DB.</summary>
+    public IQueryable<Patient> Query() =>
+        _db.Patients.OrderByDescending(p => p.RegistrationDate);
+
+    /// <summary>Applies a text filter and returns a queryable (no DB hit yet).</summary>
+    public IQueryable<Patient> Query(string? search)
+    {
+        var q = _db.Patients.AsQueryable();
+        if (!string.IsNullOrWhiteSpace(search))
+        {
+            var s = search.ToLower();
+            q = q.Where(p =>
+                p.FirstName.ToLower().Contains(s) ||
+                p.LastName.ToLower().Contains(s)  ||
+                p.PhoneNumber.Contains(s)          ||
+                p.Email.ToLower().Contains(s));
+        }
+        return q.OrderByDescending(p => p.RegistrationDate);
+    }
+
     public List<Patient> Search(string query)
     {
         query = query.ToLower();

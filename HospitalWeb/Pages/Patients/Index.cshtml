@@ -10,17 +10,19 @@
 <div class="card">
     <div class="card-header">
         <form method="get" class="d-flex gap-2" style="flex:1">
-            <input type="text" name="Search" value="@Model.Search" class="form-control" placeholder="Search by name, phone, email, or ID…" style="max-width:340px" />
+            <input type="text" name="Search" value="@Model.Search" class="form-control"
+                   placeholder="Search by name, phone or email…" style="max-width:340px" />
             <button class="btn btn-outline-primary btn-sm">Search</button>
             @if (!string.IsNullOrEmpty(Model.Search))
             {
                 <a href="/Patients" class="btn btn-outline-secondary btn-sm">Clear</a>
             }
         </form>
-        <small class="text-muted">@Model.Patients.Count patient(s)</small>
+        <small class="text-muted">@Model.Patients.TotalCount patient(s)</small>
     </div>
+
     <div class="card-body p-0">
-        @if (!Model.Patients.Any())
+        @if (!Model.Patients.Items.Any())
         {
             <div class="empty-state">
                 <div class="empty-icon"><i class="fa-solid fa-user-slash"></i></div>
@@ -42,7 +44,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var p in Model.Patients)
+                    @foreach (var p in Model.Patients.Items)
                     {
                         <tr>
                             <td>
@@ -71,6 +73,10 @@
                     }
                 </tbody>
             </table>
+
+            <div class="px-3 border-top">
+                @await Component.InvokeAsync("Pagination", new { result = Model.Patients })
+            </div>
         }
     </div>
 </div>

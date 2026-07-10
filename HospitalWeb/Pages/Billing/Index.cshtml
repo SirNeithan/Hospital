@@ -25,7 +25,7 @@
     <div class="stat-card">
         <div class="stat-icon blue"><i class="fa-solid fa-receipt"></i></div>
         <div class="stat-info">
-            <div class="stat-value">@Model.Bills.Count</div>
+            <div class="stat-value">@Model.Bills.TotalCount</div>
             <div class="stat-label">@(Model.Filter == "unpaid" ? "Unpaid Bills" : "Total Bills")</div>
         </div>
     </div>
@@ -38,9 +38,12 @@
 
 <div class="card">
     <div class="card-body p-0">
-        @if (!Model.Bills.Any())
+        @if (!Model.Bills.Items.Any())
         {
-            <div class="empty-state"><div class="empty-icon"><i class="fa-solid fa-receipt"></i></div><p>No bills found</p></div>
+            <div class="empty-state">
+                <div class="empty-icon"><i class="fa-solid fa-receipt"></i></div>
+                <p>No bills found</p>
+            </div>
         }
         else
         {
@@ -49,7 +52,7 @@
                     <tr><th>ID</th><th>Patient</th><th>Date</th><th>Total</th><th>Paid</th><th>Balance</th><th>Status</th><th></th></tr>
                 </thead>
                 <tbody>
-                    @foreach (var b in Model.Bills)
+                    @foreach (var b in Model.Bills.Items)
                     {
                         <tr>
                             <td><span class="text-muted">#@b.Id</span></td>
@@ -81,6 +84,9 @@
                     }
                 </tbody>
             </table>
+            <div class="px-3 border-top">
+                @await Component.InvokeAsync("Pagination", new { result = Model.Bills })
+            </div>
         }
     </div>
 </div>

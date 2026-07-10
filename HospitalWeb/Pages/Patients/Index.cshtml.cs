@@ -1,7 +1,8 @@
+using Microsoft.AspNetCore.Mvc;
+using HospitalManagement.Core;
 using HospitalManagement.Core.Models;
 using HospitalManagement.Services;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace HospitalWeb.Pages.Patients;
@@ -10,18 +11,18 @@ namespace HospitalWeb.Pages.Patients;
 public class IndexModel : PageModel
 {
     private readonly PatientService _patients;
-
     public IndexModel(PatientService patients) => _patients = patients;
 
-    [BindProperty(SupportsGet = true)]
-    public string? Search { get; set; }
+    [BindProperty(SupportsGet = true)] public string? Search { get; set; }
+    [BindProperty(SupportsGet = true)] public int PageNumber { get; set; } = 1;
+    public const int PageSize = 15;
 
-    public List<Patient> Patients { get; set; } = new();
+    public PagedResult<Patient> Patients { get; set; } = null!;
 
     public void OnGet()
     {
-        Patients = string.IsNullOrWhiteSpace(Search)
-            ? _patients.GetAll()
-            : _patients.Search(Search);
+        Patients = PagedResult<Patient>.Create(
+            _patients.Query(Search),
+            PageNumber, PageSize);
     }
 }

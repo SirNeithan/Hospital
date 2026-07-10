@@ -1,3 +1,4 @@
+using HospitalManagement.Core;
 using HospitalManagement.Core.Models;
 using HospitalManagement.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -13,17 +14,16 @@ public class IndexModel : PageModel
     public IndexModel(AppointmentService appts) => _appts = appts;
 
     [BindProperty(SupportsGet = true)] public string Filter { get; set; } = "upcoming";
+    [BindProperty(SupportsGet = true)] public int PageNumber { get; set; } = 1;
+    public const int PageSize = 15;
 
-    public List<Appointment> Appointments { get; set; } = new();
+    public PagedResult<Appointment> Appointments { get; set; } = null!;
 
     public void OnGet()
     {
-        Appointments = Filter switch
-        {
-            "today"    => _appts.GetToday(),
-            "all"      => _appts.GetAll().OrderByDescending(a => a.AppointmentDate).ToList(),
-            _          => _appts.GetUpcoming(30)
-        };
+        Appointments = PagedResult<Appointment>.Create(
+            _appts.Query(Filter),
+            PageNumber, PageSize);
     }
 
     public IActionResult OnPostCancel(int id)

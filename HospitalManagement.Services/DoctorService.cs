@@ -29,6 +29,22 @@ public class DoctorService
 
     public List<Doctor> GetAll() => _db.Doctors.ToList();
 
+    /// <summary>Returns a queryable for paginated/filtered use.</summary>
+    public IQueryable<Doctor> Query(string? search = null, Specialization? spec = null)
+    {
+        var q = _db.Doctors.AsQueryable();
+        if (spec.HasValue)
+            q = q.Where(d => d.Specialization == spec.Value);
+        if (!string.IsNullOrWhiteSpace(search))
+        {
+            var s = search.ToLower();
+            q = q.Where(d =>
+                d.FirstName.ToLower().Contains(s) ||
+                d.LastName.ToLower().Contains(s));
+        }
+        return q.OrderBy(d => d.LastName);
+    }
+
     public List<Doctor> GetBySpecialization(Specialization spec) =>
         _db.Doctors.Where(d => d.Specialization == spec && d.IsAvailable).ToList();
 

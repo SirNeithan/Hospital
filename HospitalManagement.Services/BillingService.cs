@@ -44,6 +44,17 @@ public class BillingService
     public List<Bill> GetAll() =>
         _db.Bills.OrderByDescending(b => b.BillDate).ToList();
 
+    /// <summary>Returns a queryable for paginated list views.</summary>
+    public IQueryable<Bill> Query(string? filter = null)
+    {
+        var q = _db.Bills.AsQueryable();
+        if (filter == "unpaid")
+            q = q.Where(b => b.Status == BillStatus.Pending ||
+                              b.Status == BillStatus.PartiallyPaid ||
+                              b.Status == BillStatus.Overdue);
+        return q.OrderByDescending(b => b.BillDate);
+    }
+
     public List<Bill> GetUnpaid() =>
         _db.Bills.Where(b => b.Status == BillStatus.Pending ||
                              b.Status == BillStatus.PartiallyPaid ||

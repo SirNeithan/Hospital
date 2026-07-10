@@ -9,20 +9,33 @@
 
 <div class="card">
     <div class="card-header">
-        <h5>All Records</h5>
-        <small class="text-muted">@Model.Records.Count record(s)</small>
+        <form method="get" class="d-flex gap-2" style="flex:1">
+            <input type="text" name="Search" value="@Model.Search" class="form-control"
+                   placeholder="Search patient, doctor or diagnosis…" style="max-width:340px" />
+            <button class="btn btn-outline-primary btn-sm">Search</button>
+            @if (!string.IsNullOrEmpty(Model.Search))
+            {
+                <a href="/Records" class="btn btn-outline-secondary btn-sm">Clear</a>
+            }
+        </form>
+        <small class="text-muted">@Model.Records.TotalCount record(s)</small>
     </div>
     <div class="card-body p-0">
-        @if (!Model.Records.Any())
+        @if (!Model.Records.Items.Any())
         {
-            <div class="empty-state"><div class="empty-icon"><i class="fa-solid fa-file-medical"></i></div><p>No records yet</p></div>
+            <div class="empty-state">
+                <div class="empty-icon"><i class="fa-solid fa-file-medical"></i></div>
+                <p>No records found</p>
+            </div>
         }
         else
         {
             <table class="table">
-                <thead><tr><th>ID</th><th>Date</th><th>Patient</th><th>Doctor</th><th>Diagnosis</th><th>Prescriptions</th><th></th></tr></thead>
+                <thead>
+                    <tr><th>ID</th><th>Date</th><th>Patient</th><th>Doctor</th><th>Diagnosis</th><th>Prescriptions</th><th></th></tr>
+                </thead>
                 <tbody>
-                    @foreach (var r in Model.Records)
+                    @foreach (var r in Model.Records.Items)
                     {
                         <tr>
                             <td><span class="text-muted">#@r.Id</span></td>
@@ -36,6 +49,9 @@
                     }
                 </tbody>
             </table>
+            <div class="px-3 border-top">
+                @await Component.InvokeAsync("Pagination", new { result = Model.Records })
+            </div>
         }
     </div>
 </div>

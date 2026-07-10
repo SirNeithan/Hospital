@@ -57,6 +57,25 @@ public class AppointmentService
 
     public List<Appointment> GetAll() => _db.Appointments.ToList();
 
+    /// <summary>Returns a queryable filtered by optional status/date range for paginated lists.</summary>
+    public IQueryable<Appointment> Query(string? filter = null)
+    {
+        var today    = DateTime.Today;
+        var tomorrow = today.AddDays(1);
+        IQueryable<Appointment> q = filter switch
+        {
+            "today"    => _db.Appointments.Where(a =>
+                              a.AppointmentDate >= today &&
+                              a.AppointmentDate < tomorrow &&
+                              a.Status != AppointmentStatus.Cancelled),
+            "upcoming" => _db.Appointments.Where(a =>
+                              a.AppointmentDate >= DateTime.Now &&
+                              a.Status != AppointmentStatus.Cancelled),
+            _          => _db.Appointments
+        };
+        return q.OrderByDescending(a => a.AppointmentDate);
+    }
+
     public List<Appointment> GetByPatient(int patientId) =>
         _db.Appointments.Where(a => a.PatientId == patientId)
             .OrderByDescending(a => a.AppointmentDate).ToList();

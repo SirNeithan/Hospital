@@ -7,7 +7,6 @@
     <a href="/Appointments/Create" class="btn btn-primary">+ Schedule</a>
 </div>
 
-<!-- Filter tabs -->
 <div class="d-flex gap-2 mb-4">
     <a href="?Filter=upcoming" class="btn btn-sm @(Model.Filter == "upcoming" ? "btn-primary" : "btn-outline-secondary")">Upcoming</a>
     <a href="?Filter=today"    class="btn btn-sm @(Model.Filter == "today"    ? "btn-primary" : "btn-outline-secondary")">Today</a>
@@ -17,12 +16,15 @@
 <div class="card">
     <div class="card-header">
         <h5>@(Model.Filter == "today" ? "Today's Appointments" : Model.Filter == "all" ? "All Appointments" : "Upcoming Appointments")</h5>
-        <small class="text-muted">@Model.Appointments.Count result(s)</small>
+        <small class="text-muted">@Model.Appointments.TotalCount result(s)</small>
     </div>
     <div class="card-body p-0">
-        @if (!Model.Appointments.Any())
+        @if (!Model.Appointments.Items.Any())
         {
-            <div class="empty-state"><div class="empty-icon"><i class="fa-solid fa-calendar-xmark"></i></div><p>No appointments found</p></div>
+            <div class="empty-state">
+                <div class="empty-icon"><i class="fa-solid fa-calendar-xmark"></i></div>
+                <p>No appointments found</p>
+            </div>
         }
         else
         {
@@ -31,7 +33,7 @@
                     <tr><th>ID</th><th>Date & Time</th><th>Patient</th><th>Doctor</th><th>Reason</th><th>Status</th><th></th></tr>
                 </thead>
                 <tbody>
-                    @foreach (var a in Model.Appointments)
+                    @foreach (var a in Model.Appointments.Items)
                     {
                         <tr>
                             <td><span class="text-muted">#@a.Id</span></td>
@@ -59,7 +61,8 @@
                                 @if (a.Status != AppointmentStatus.Cancelled && a.Status != AppointmentStatus.Completed)
                                 {
                                     <form method="post" asp-page-handler="Cancel" asp-route-id="@a.Id" style="display:inline">
-                                        <button class="btn btn-sm btn-outline-danger" onclick="return confirm('Cancel this appointment?')">Cancel</button>
+                                        <button class="btn btn-sm btn-outline-danger"
+                                                onclick="return confirm('Cancel this appointment?')">Cancel</button>
                                     </form>
                                 }
                             </td>
@@ -67,6 +70,9 @@
                     }
                 </tbody>
             </table>
+            <div class="px-3 border-top">
+                @await Component.InvokeAsync("Pagination", new { result = Model.Appointments })
+            </div>
         }
     </div>
 </div>

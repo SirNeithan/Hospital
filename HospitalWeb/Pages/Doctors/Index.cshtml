@@ -9,30 +9,40 @@
 
 <div class="card">
     <div class="card-header">
-        <form method="get" class="d-flex gap-2" style="flex:1">
-            <input type="text" name="Search" value="@Model.Search" class="form-control" placeholder="Search by name or specialization…" style="max-width:320px" />
-            <button class="btn btn-outline-primary btn-sm">Search</button>
-            @if (!string.IsNullOrEmpty(Model.Search))
-            { <a href="/Doctors" class="btn btn-outline-secondary btn-sm">Clear</a> }
+        <form method="get" class="d-flex gap-2 flex-wrap" style="flex:1">
+            <input type="text" name="Search" value="@Model.Search" class="form-control"
+                   placeholder="Search by name…" style="max-width:260px" />
+            <select name="Spec" class="form-select" style="max-width:200px">
+                <option value="">All Specializations</option>
+                @foreach (var s in Enum.GetNames<Specialization>())
+                {
+                    <option value="@s" selected="@(Model.Spec == s)">@s</option>
+                }
+            </select>
+            <button class="btn btn-outline-primary btn-sm">Filter</button>
+            @if (!string.IsNullOrEmpty(Model.Search) || !string.IsNullOrEmpty(Model.Spec))
+            {
+                <a href="/Doctors" class="btn btn-outline-secondary btn-sm">Clear</a>
+            }
         </form>
-        <small class="text-muted">@Model.Doctors.Count doctor(s)</small>
+        <small class="text-muted">@Model.Doctors.TotalCount doctor(s)</small>
     </div>
     <div class="card-body p-0">
-        @if (!Model.Doctors.Any())
+        @if (!Model.Doctors.Items.Any())
         {
-            <div class="empty-state"><div class="empty-icon"><i class="fa-solid fa-user-doctor"></i></div><p>No doctors found</p></div>
+            <div class="empty-state">
+                <div class="empty-icon"><i class="fa-solid fa-user-doctor"></i></div>
+                <p>No doctors found</p>
+            </div>
         }
         else
         {
             <table class="table">
                 <thead>
-                    <tr>
-                        <th>Doctor</th><th>Specialization</th>
-                        <th>Consult Fee</th><th>Available Days</th><th>Status</th><th></th>
-                    </tr>
+                    <tr><th>Doctor</th><th>Specialization</th><th>Consult Fee</th><th>Available Days</th><th>Status</th><th></th></tr>
                 </thead>
                 <tbody>
-                    @foreach (var d in Model.Doctors)
+                    @foreach (var d in Model.Doctors.Items)
                     {
                         <tr>
                             <td>
@@ -61,6 +71,9 @@
                     }
                 </tbody>
             </table>
+            <div class="px-3 border-top">
+                @await Component.InvokeAsync("Pagination", new { result = Model.Doctors })
+            </div>
         }
     </div>
 </div>
