@@ -1,0 +1,28 @@
+@model PatientFormViewModel
+@{ ViewData["Title"] = "Edit Patient"; ViewData["Page"] = "Patients"; }
+
+<div class="page-header">
+    <h2><i class="fa-solid fa-user-pen me-2"></i>Edit Patient</h2>
+    <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-outline-secondary">← Back</a>
+</div>
+
+<div class="card" style="max-width:760px">
+    <div class="card-body">
+        <form asp-action="Edit" method="post">
+            <input type="hidden" asp-for="Id" />
+            <div class="row g-3">
+                <div class="col-md-6"><label asp-for="FirstName" class="form-label fw-semibold">First Name *</label><input asp-for="FirstName" class="form-control" /><span asp-validation-for="FirstName" class="text-danger small"></span></div>
+                <div class="col-md-6"><label asp-for="LastName" class="form-label fw-semibold">Last Name *</label><input asp-for="LastName" class="form-control" /><span asp-validation-for="LastName" class="text-danger small"></span></div>
+                <div class="col-md-6"><label asp-for="PhoneNumber" class="form-label fw-semibold">Phone *</label><input asp-for="PhoneNumber" class="form-control" /></div>
+                <div class="col-md-6"><label asp-for="Email" class="form-label fw-semibold">Email</label><input asp-for="Email" class="form-control" /></div>
+                <div class="col-12"><label asp-for="Address" class="form-label fw-semibold">Address</label><input asp-for="Address" class="form-control" /></div>
+                <div class="col-md-6"><label asp-for="EmergencyContactName" class="form-label fw-semibold">Emergency Contact Name</label><input asp-for="EmergencyContactName" class="form-control" /></div>
+                <div class="col-md-6"><label asp-for="EmergencyContactPhone" class="form-label fw-semibold">Emergency Contact Phone</label><input asp-for="EmergencyContactPhone" class="form-control" /></div>
+            </div>
+            <div class="mt-4 d-flex gap-2">
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+                <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>

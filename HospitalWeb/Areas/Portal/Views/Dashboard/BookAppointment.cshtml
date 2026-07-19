@@ -1,0 +1,109 @@
+@model BookAppointmentViewModel
+@{ ViewData["Title"] = "Book Appointment"; ViewData["Page"] = "PatientDashboard"; }
+
+<div class="page-header">
+    <h2><i class="fa-solid fa-calendar-plus me-2"></i>Book an Appointment</h2>
+    <a asp-action="Index" class="btn btn-outline-secondary">← Dashboard</a>
+</div>
+
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{ <div class="alert alert-danger"><i class="fa-solid fa-circle-exclamation me-2"></i>@Model.ErrorMessage</div> }
+
+<div class="row g-4">
+    <div class="col-lg-7">
+        <div class="card">
+            <div class="card-header"><h5>Appointment Details</h5></div>
+            <div class="card-body">
+                <form asp-action="BookAppointment" method="post">
+                    <div class="mb-3">
+                        <label asp-for="DoctorId" class="form-label fw-semibold">Select Doctor *</label>
+                        <select asp-for="DoctorId" class="form-select" id="doctorSelect">
+                            <option value="0">— Choose a doctor —</option>
+                            @foreach (var d in Model.Doctors)
+                            {
+                                <option value="@d.Id"
+                                        data-days="@string.Join(",", d.AvailableDays.Select(x => (int)x))"
+                                        data-start="@d.WorkStartTime.Hours"
+                                        data-end="@d.WorkEndTime.Hours"
+                                        data-fee="@d.ConsultationFee.ToString("N0")"
+                                        selected="@(Model.DoctorId == d.Id)">
+                                    @d.FullName — @d.Specialization (UGX @d.ConsultationFee.ToString("N0"))
+                                </option>
+                            }
+                        </select>
+                        <span asp-validation-for="DoctorId" class="text-danger small"></span>
+                    </div>
+
+                    <div id="doctorInfo" class="p-3 mb-3 rounded" style="background:#f0fdf4;border:1px solid #86efac;display:none">
+                        <strong id="dName"></strong><br>
+                        <small class="text-muted"><i class="fa-regular fa-calendar me-1"></i>Available: <span id="dDays"></span><br>
+                        <i class="fa-regular fa-clock me-1"></i>Hours: <span id="dHours"></span> &nbsp;•&nbsp;
+                        <i class="fa-solid fa-sack-dollar me-1"></i>Fee: UGX <span id="dFee"></span></small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="AppointmentDate" class="form-label fw-semibold">Date & Time *</label>
+                        <input asp-for="AppointmentDate" type="datetime-local" class="form-control"
+                               value="@Model.AppointmentDate.ToString("yyyy-MM-ddTHH:mm")"
+                               min="@DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")T08:00" />
+                        <small class="text-muted">Choose a date when the doctor is available, within working hours.</small>
+                        <span asp-validation-for="AppointmentDate" class="text-danger small d-block"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Reason" class="form-label fw-semibold">Reason for Visit *</label>
+                        <input asp-for="Reason" class="form-control" placeholder="e.g. Routine check-up, chest pain…" />
+                        <span asp-validation-for="Reason" class="text-danger small"></span>
+                    </div>
+                    <div class="mb-4">
+                        <label asp-for="Notes" class="form-label fw-semibold">Additional Notes</label>
+                        <textarea asp-for="Notes" class="form-control" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary px-4"><i class="fa-solid fa-calendar-check me-2"></i>Confirm Booking</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-5">
+        <div class="card">
+            <div class="card-header"><h5><i class="fa-solid fa-user-doctor me-2"></i>Available Doctors</h5></div>
+            <div class="card-body p-0">
+                @foreach (var d in Model.Doctors)
+                {
+                    <div class="p-3 border-bottom doctor-pick" data-id="@d.Id" style="cursor:pointer"
+                         onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background=''">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <div class="fw-semibold">@d.FullName</div>
+                                <small class="text-muted">@d.Specialization</small><br>
+                                <small class="text-muted">@string.Join(", ", d.AvailableDays.Select(x => x.ToString()[..3])) &nbsp;•&nbsp; @d.WorkStartTime.ToString(@"hh\:mm")–@d.WorkEndTime.ToString(@"hh\:mm")</small>
+                            </div>
+                            <span class="badge bg-light text-dark border">UGX @d.ConsultationFee.ToString("N0")</span>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+const dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const sel = document.getElementById('doctorSelect');
+const info = document.getElementById('doctorInfo');
+function showInfo() {
+    const opt = sel.options[sel.selectedIndex];
+    if (!opt.value || opt.value === '0') { info.style.display='none'; return; }
+    document.getElementById('dName').textContent = opt.text.split('—')[0].trim();
+    document.getElementById('dDays').textContent = opt.dataset.days.split(',').map(d => dayNames[d]).join(', ') || '—';
+    document.getElementById('dHours').textContent = opt.dataset.start + ':00 – ' + opt.dataset.end + ':00';
+    document.getElementById('dFee').textContent = opt.dataset.fee;
+    info.style.display = 'block';
+}
+sel.addEventListener('change', showInfo);
+if (sel.value && sel.value !== '0') showInfo();
+document.querySelectorAll('.doctor-pick').forEach(el => {
+    el.addEventListener('click', () => { sel.value = el.dataset.id; showInfo(); });
+});
+</script>
+}

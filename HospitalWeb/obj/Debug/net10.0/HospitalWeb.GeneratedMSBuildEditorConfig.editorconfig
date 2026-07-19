@@ -31,6 +31,186 @@ build_property._RazorSourceGeneratorDebug =
 build_property.EffectiveAnalysisLevelStyle = 10.0
 build_property.EnableCodeStyleSeverity = 
 
+[C:/Users/user/Desktop/Hospital/HospitalWeb/Areas/Admin/Views/Admin/AuditLogs.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWRtaW5cQXVkaXRMb2dzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/Desktop/Hospital/HospitalWeb/Areas/Admin/Views/Admin/Users.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWRtaW5cVXNlcnMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/Desktop/Hospital/HospitalWeb/Areas/Admin/Views/Auth/AccessDenied.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQXV0aFxBY2Nlc3NEZW5pZWQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/Desktop/Hospital/HospitalWeb/Areas/Admin/Views/Auth/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQXV0aFxMb2dpbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/Desktop/Hospital/HospitalWeb/Areas/Admin/Views/Auth/Register.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQXV0aFxSZWdpc3Rlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/Desktop/Hospital/HospitalWeb/Areas/Admin/Views/Shared/Components/Pagination/Default.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2hhcmVkXENvbXBvbmVudHNcUGFnaW5hdGlvblxEZWZhdWx0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/Desktop/Hospital/HospitalWeb/Areas/Admin/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/Desktop/Hospital/HospitalWeb/Areas/Admin/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/Desktop/Hospital/HospitalWeb/Areas/Admin/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/Desktop/Hospital/HospitalWeb/Areas/Admin/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/Desktop/Hospital/HospitalWeb/Areas/Hospital/Views/Appointments/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSG9zcGl0YWxcVmlld3NcQXBwb2ludG1lbnRzXENyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/Desktop/Hospital/HospitalWeb/Areas/Hospital/Views/Appointments/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSG9zcGl0YWxcVmlld3NcQXBwb2ludG1lbnRzXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/Desktop/Hospital/HospitalWeb/Areas/Hospital/Views/Billing/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSG9zcGl0YWxcVmlld3NcQmlsbGluZ1xDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/Desktop/Hospital/HospitalWeb/Areas/Hospital/Views/Billing/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSG9zcGl0YWxcVmlld3NcQmlsbGluZ1xEZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/Desktop/Hospital/HospitalWeb/Areas/Hospital/Views/Billing/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSG9zcGl0YWxcVmlld3NcQmlsbGluZ1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/Desktop/Hospital/HospitalWeb/Areas/Hospital/Views/Billing/Pay.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSG9zcGl0YWxcVmlld3NcQmlsbGluZ1xQYXkuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/Desktop/Hospital/HospitalWeb/Areas/Hospital/Views/Doctors/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSG9zcGl0YWxcVmlld3NcRG9jdG9yc1xDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/Desktop/Hospital/HospitalWeb/Areas/Hospital/Views/Doctors/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSG9zcGl0YWxcVmlld3NcRG9jdG9yc1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/Desktop/Hospital/HospitalWeb/Areas/Hospital/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSG9zcGl0YWxcVmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/Desktop/Hospital/HospitalWeb/Areas/Hospital/Views/Patients/Admit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSG9zcGl0YWxcVmlld3NcUGF0aWVudHNcQWRtaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/Desktop/Hospital/HospitalWeb/Areas/Hospital/Views/Patients/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSG9zcGl0YWxcVmlld3NcUGF0aWVudHNcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/Desktop/Hospital/HospitalWeb/Areas/Hospital/Views/Patients/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSG9zcGl0YWxcVmlld3NcUGF0aWVudHNcRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/Desktop/Hospital/HospitalWeb/Areas/Hospital/Views/Patients/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSG9zcGl0YWxcVmlld3NcUGF0aWVudHNcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/Desktop/Hospital/HospitalWeb/Areas/Hospital/Views/Patients/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSG9zcGl0YWxcVmlld3NcUGF0aWVudHNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/Desktop/Hospital/HospitalWeb/Areas/Hospital/Views/Records/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSG9zcGl0YWxcVmlld3NcUmVjb3Jkc1xDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/Desktop/Hospital/HospitalWeb/Areas/Hospital/Views/Records/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSG9zcGl0YWxcVmlld3NcUmVjb3Jkc1xEZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/Desktop/Hospital/HospitalWeb/Areas/Hospital/Views/Records/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSG9zcGl0YWxcVmlld3NcUmVjb3Jkc1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/Desktop/Hospital/HospitalWeb/Areas/Hospital/Views/Rooms/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSG9zcGl0YWxcVmlld3NcUm9vbXNcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/Desktop/Hospital/HospitalWeb/Areas/Hospital/Views/Rooms/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSG9zcGl0YWxcVmlld3NcUm9vbXNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/Desktop/Hospital/HospitalWeb/Areas/Hospital/Views/Shared/Components/Pagination/Default.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSG9zcGl0YWxcVmlld3NcU2hhcmVkXENvbXBvbmVudHNcUGFnaW5hdGlvblxEZWZhdWx0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/Desktop/Hospital/HospitalWeb/Areas/Hospital/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSG9zcGl0YWxcVmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/Desktop/Hospital/HospitalWeb/Areas/Hospital/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSG9zcGl0YWxcVmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/Desktop/Hospital/HospitalWeb/Areas/Hospital/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSG9zcGl0YWxcVmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/Desktop/Hospital/HospitalWeb/Areas/Hospital/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSG9zcGl0YWxcVmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/Desktop/Hospital/HospitalWeb/Areas/Portal/Views/Dashboard/BookAppointment.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUG9ydGFsXFZpZXdzXERhc2hib2FyZFxCb29rQXBwb2ludG1lbnQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/Desktop/Hospital/HospitalWeb/Areas/Portal/Views/Dashboard/Doctors.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUG9ydGFsXFZpZXdzXERhc2hib2FyZFxEb2N0b3JzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/Desktop/Hospital/HospitalWeb/Areas/Portal/Views/Dashboard/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUG9ydGFsXFZpZXdzXERhc2hib2FyZFxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/Desktop/Hospital/HospitalWeb/Areas/Portal/Views/Dashboard/MyBills.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUG9ydGFsXFZpZXdzXERhc2hib2FyZFxNeUJpbGxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/Desktop/Hospital/HospitalWeb/Areas/Portal/Views/Dashboard/MyRecords.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUG9ydGFsXFZpZXdzXERhc2hib2FyZFxNeVJlY29yZHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/Desktop/Hospital/HospitalWeb/Areas/Portal/Views/Dashboard/Profile.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUG9ydGFsXFZpZXdzXERhc2hib2FyZFxQcm9maWxlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/Desktop/Hospital/HospitalWeb/Areas/Portal/Views/Shared/Components/Pagination/Default.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUG9ydGFsXFZpZXdzXFNoYXJlZFxDb21wb25lbnRzXFBhZ2luYXRpb25cRGVmYXVsdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/Desktop/Hospital/HospitalWeb/Areas/Portal/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUG9ydGFsXFZpZXdzXFNoYXJlZFxfTGF5b3V0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/Desktop/Hospital/HospitalWeb/Areas/Portal/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUG9ydGFsXFZpZXdzXFNoYXJlZFxfVmFsaWRhdGlvblNjcmlwdHNQYXJ0aWFsLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/Desktop/Hospital/HospitalWeb/Areas/Portal/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUG9ydGFsXFZpZXdzXF9WaWV3SW1wb3J0cy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/Desktop/Hospital/HospitalWeb/Areas/Portal/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcUG9ydGFsXFZpZXdzXF9WaWV3U3RhcnQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/user/Desktop/Hospital/HospitalWeb/Pages/Admin/AuditLogs.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cQXVkaXRMb2dzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
@@ -185,4 +365,20 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/user/Desktop/Hospital/HospitalWeb/Views/Shared/Components/Pagination/Default.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXENvbXBvbmVudHNcUGFnaW5hdGlvblxEZWZhdWx0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/Desktop/Hospital/HospitalWeb/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/Desktop/Hospital/HospitalWeb/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/Desktop/Hospital/HospitalWeb/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/Desktop/Hospital/HospitalWeb/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 

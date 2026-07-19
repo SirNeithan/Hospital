@@ -1,0 +1,55 @@
+@model Bill
+@{ ViewData["Title"] = $"Bill #{Model.Id}"; ViewData["Page"] = "Billing"; }
+
+<div class="page-header">
+    <h2><i class="fa-solid fa-receipt me-2"></i>Bill #@Model.Id</h2>
+    <div class="d-flex gap-2">
+        @if (Model.Status != BillStatus.Paid && Model.Status != BillStatus.Cancelled)
+        { <a asp-action="Pay" asp-route-id="@Model.Id" class="btn btn-success">Record Payment</a> }
+        <a asp-action="Index" class="btn btn-outline-secondary">← Back</a>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header"><h5>Bill Items</h5></div>
+            <div class="card-body p-0">
+                <table class="table mb-0">
+                    <thead class="table-light"><tr><th>Description</th><th>Qty</th><th>Unit Price</th><th>Total</th></tr></thead>
+                    <tbody>
+                    @foreach (var item in Model.Items)
+                    {
+                        <tr><td>@item.Description</td><td>@item.Quantity</td><td>UGX @item.UnitPrice.ToString("N0")</td><td>UGX @item.Total.ToString("N0")</td></tr>
+                    }
+                    </tbody>
+                    <tfoot>
+                        <tr class="table-light"><td colspan="3" class="text-end fw-semibold">Subtotal</td><td>UGX @Model.SubTotal.ToString("N0")</td></tr>
+                        <tr><td colspan="3" class="text-end text-muted">Tax (@((Model.TaxRate * 100).ToString("F0"))%)</td><td>UGX @Model.Tax.ToString("N0")</td></tr>
+                        <tr class="fw-bold"><td colspan="3" class="text-end">Total</td><td>UGX @Model.TotalAmount.ToString("N0")</td></tr>
+                        <tr class="text-success"><td colspan="3" class="text-end">Paid</td><td>UGX @Model.AmountPaid.ToString("N0")</td></tr>
+                        <tr class="@(Model.Balance > 0 ? "text-danger" : "text-success") fw-bold"><td colspan="3" class="text-end">Balance</td><td>UGX @Model.Balance.ToString("N0")</td></tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header"><h5>Bill Information</h5></div>
+            <div class="card-body">
+                <div class="row g-2">
+                    <div class="col-6"><small class="text-muted">Patient</small><br><strong>@Model.PatientName</strong></div>
+                    <div class="col-6"><small class="text-muted">Status</small><br><span class="badge @(Model.Status == BillStatus.Paid ? "bg-success" : Model.Status == BillStatus.Overdue ? "bg-danger" : "bg-warning text-dark")">@Model.Status</span></div>
+                    <div class="col-6"><small class="text-muted">Bill Date</small><br><strong>@Model.BillDate.ToString("MMM dd, yyyy")</strong></div>
+                    <div class="col-6"><small class="text-muted">Due Date</small><br><strong>@Model.DueDate.ToString("MMM dd, yyyy")</strong></div>
+                    @if (!string.IsNullOrEmpty(Model.InsuranceProvider))
+                    {
+                        <div class="col-12"><small class="text-muted">Insurance</small><br><strong>@Model.InsuranceProvider (@Model.InsurancePolicyNumber)</strong></div>
+                        <div class="col-12"><small class="text-muted">Coverage</small><br><strong>UGX @Model.InsuranceCoverage.ToString("N0")</strong></div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

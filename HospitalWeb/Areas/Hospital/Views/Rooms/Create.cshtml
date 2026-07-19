@@ -1,0 +1,25 @@
+@{ ViewData["Title"] = "Add Room"; ViewData["Page"] = "Rooms"; }
+
+<div class="page-header">
+    <h2><i class="fa-solid fa-bed me-2"></i>Add Room</h2>
+    <a asp-action="Index" class="btn btn-outline-secondary">← Back</a>
+</div>
+
+<div class="card" style="max-width:560px">
+    <div class="card-body">
+        <form asp-action="Create" method="post">
+            <div class="row g-3">
+                <div class="col-md-4"><label class="form-label fw-semibold">Room Number *</label><input name="roomNumber" class="form-control" placeholder="e.g. 101" /></div>
+                <div class="col-md-4"><label class="form-label fw-semibold">Type</label><select name="type" asp-items="Html.GetEnumSelectList<RoomType>()" class="form-select"></select></div>
+                <div class="col-md-4"><label class="form-label fw-semibold">Capacity</label><input name="capacity" type="number" class="form-control" value="1" min="1" /></div>
+                <div class="col-md-4"><label class="form-label fw-semibold">Daily Rate (UGX)</label><input name="dailyRate" type="number" class="form-control" /></div>
+                <div class="col-md-4"><label class="form-label fw-semibold">Floor</label><input name="floor" class="form-control" placeholder="e.g. 1" /></div>
+                <div class="col-md-4"><label class="form-label fw-semibold">Ward</label><input name="ward" class="form-control" placeholder="e.g. General Ward" /></div>
+            </div>
+            <div class="mt-4 d-flex gap-2">
+                <button type="submit" class="btn btn-primary">Add Room</button>
+                <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>

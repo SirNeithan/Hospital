@@ -1,0 +1,30 @@
+@model PatientFormViewModel
+@{ ViewData["Title"] = "Register Patient"; ViewData["Page"] = "Patients"; }
+
+<div class="page-header">
+    <h2><i class="fa-solid fa-user-plus me-2"></i>Register Patient</h2>
+    <a asp-action="Index" class="btn btn-outline-secondary">← Back</a>
+</div>
+
+<div class="card" style="max-width:760px">
+    <div class="card-body">
+        <form asp-action="Create" method="post">
+            <div class="row g-3">
+                <div class="col-md-4"><label asp-for="FirstName" class="form-label fw-semibold">First Name *</label><input asp-for="FirstName" class="form-control" /><span asp-validation-for="FirstName" class="text-danger small"></span></div>
+                <div class="col-md-4"><label asp-for="LastName" class="form-label fw-semibold">Last Name *</label><input asp-for="LastName" class="form-control" /><span asp-validation-for="LastName" class="text-danger small"></span></div>
+                <div class="col-md-4"><label asp-for="DateOfBirth" class="form-label fw-semibold">Date of Birth *</label><input asp-for="DateOfBirth" type="date" class="form-control" /></div>
+                <div class="col-md-4"><label asp-for="Gender" class="form-label fw-semibold">Gender</label><select asp-for="Gender" asp-items="Html.GetEnumSelectList<Gender>()" class="form-select"></select></div>
+                <div class="col-md-4"><label asp-for="BloodType" class="form-label fw-semibold">Blood Type</label><select asp-for="BloodType" asp-items="Html.GetEnumSelectList<BloodType>()" class="form-select"></select></div>
+                <div class="col-md-4"><label asp-for="PhoneNumber" class="form-label fw-semibold">Phone *</label><input asp-for="PhoneNumber" class="form-control" /><span asp-validation-for="PhoneNumber" class="text-danger small"></span></div>
+                <div class="col-md-6"><label asp-for="Email" class="form-label fw-semibold">Email</label><input asp-for="Email" class="form-control" /></div>
+                <div class="col-md-6"><label asp-for="Address" class="form-label fw-semibold">Address</label><input asp-for="Address" class="form-control" /></div>
+                <div class="col-md-6"><label asp-for="EmergencyContactName" class="form-label fw-semibold">Emergency Contact Name *</label><input asp-for="EmergencyContactName" class="form-control" /><span asp-validation-for="EmergencyContactName" class="text-danger small"></span></div>
+                <div class="col-md-6"><label asp-for="EmergencyContactPhone" class="form-label fw-semibold">Emergency Contact Phone *</label><input asp-for="EmergencyContactPhone" class="form-control" /><span asp-validation-for="EmergencyContactPhone" class="text-danger small"></span></div>
+            </div>
+            <div class="mt-4 d-flex gap-2">
+                <button type="submit" class="btn btn-primary">Register Patient</button>
+                <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>

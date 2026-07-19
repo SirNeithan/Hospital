@@ -1,0 +1,31 @@
+@model Bill
+@{ ViewData["Title"] = $"Pay Bill #{Model.Id}"; ViewData["Page"] = "Billing"; }
+
+<div class="page-header">
+    <h2><i class="fa-solid fa-money-bill-wave me-2"></i>Record Payment — Bill #@Model.Id</h2>
+    <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-outline-secondary">← Back</a>
+</div>
+
+@if (ViewBag.ErrorMessage != null)
+{ <div class="alert alert-danger">@ViewBag.ErrorMessage</div> }
+
+<div class="card" style="max-width:440px">
+    <div class="card-body">
+        <div class="mb-4 p-3 rounded" style="background:#f0fdf4;border:1px solid #86efac">
+            <div class="d-flex justify-content-between mb-2"><span class="text-muted">Total Amount</span><strong>UGX @Model.TotalAmount.ToString("N0")</strong></div>
+            <div class="d-flex justify-content-between mb-2"><span class="text-muted">Already Paid</span><strong class="text-success">UGX @Model.AmountPaid.ToString("N0")</strong></div>
+            <div class="d-flex justify-content-between"><span class="text-muted fw-bold">Balance Due</span><strong class="text-danger">UGX @Model.Balance.ToString("N0")</strong></div>
+        </div>
+        <form asp-action="Pay" asp-route-id="@Model.Id" method="post">
+            <div class="mb-4">
+                <label class="form-label fw-semibold">Payment Amount (UGX) *</label>
+                <input type="number" name="amount" value="@ViewBag.Amount" class="form-control form-control-lg"
+                       min="1" max="@Model.Balance" step="1000" />
+            </div>
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-success px-4">Confirm Payment</button>
+                <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,93 @@
+@model DashboardViewModel
+@{ ViewData["Title"] = "My Dashboard"; ViewData["Page"] = "PatientDashboard"; }
+
+@if (Model.CurrentPatient == null)
+{
+    <div class="alert alert-warning">Patient record not found. Please contact reception.</div>
+    return;
+}
+
+<div class="card mb-4" style="background:linear-gradient(135deg,#0f4c81,#1a7a5e);color:#fff;border:none">
+    <div class="card-body d-flex align-items-center justify-content-between flex-wrap gap-3" style="padding:1.75rem">
+        <div>
+            <h3 class="mb-1 fw-bold">Welcome back, @Model.CurrentPatient.FirstName! 👋</h3>
+            <p class="mb-0" style="opacity:.85">Here's a summary of your health activity at City Hospital.</p>
+        </div>
+        <div class="d-flex gap-3">
+            <a asp-action="BookAppointment" class="btn btn-light fw-semibold"><i class="fa-solid fa-calendar-plus me-2"></i>Book Appointment</a>
+            <a asp-action="Doctors" class="btn btn-outline-light fw-semibold"><i class="fa-solid fa-user-doctor me-2"></i>Our Doctors</a>
+        </div>
+    </div>
+</div>
+
+<div class="stat-grid mb-4">
+    <div class="stat-card"><div class="stat-icon blue"><i class="fa-solid fa-calendar-check"></i></div><div class="stat-info"><div class="stat-value">@Model.UpcomingAppointments.Count</div><div class="stat-label">Upcoming</div></div></div>
+    <div class="stat-card"><div class="stat-icon teal"><i class="fa-solid fa-clock-rotate-left"></i></div><div class="stat-info"><div class="stat-value">@Model.TotalAppointments</div><div class="stat-label">Total Visits</div></div></div>
+    <div class="stat-card"><div class="stat-icon purple"><i class="fa-solid fa-file-medical"></i></div><div class="stat-info"><div class="stat-value">@Model.RecentRecords.Count</div><div class="stat-label">Medical Records</div></div></div>
+    <div class="stat-card"><div class="stat-icon @(Model.OutstandingBalance > 0 ? "red" : "green")"><i class="fa-solid fa-file-invoice-dollar"></i></div><div class="stat-info"><div class="stat-value" style="font-size:1.1rem">UGX @Model.OutstandingBalance.ToString("N0")</div><div class="stat-label">Outstanding Balance</div></div></div>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-7">
+        <div class="card h-100">
+            <div class="card-header">
+                <h5><i class="fa-solid fa-calendar-check me-2"></i>Upcoming Appointments</h5>
+                <a asp-action="BookAppointment" class="btn btn-sm btn-primary">+ Book New</a>
+            </div>
+            <div class="card-body p-0">
+                @if (!Model.UpcomingAppointments.Any())
+                {
+                    <div class="empty-state"><div class="empty-icon"><i class="fa-solid fa-calendar-xmark"></i></div><p>No upcoming appointments</p><a asp-action="BookAppointment" class="btn btn-primary btn-sm">Schedule one now</a></div>
+                }
+                else
+                {
+                    <table class="table"><tbody>
+                    @foreach (var a in Model.UpcomingAppointments)
+                    {
+                        <tr>
+                            <td><div class="fw-semibold">@a.AppointmentDate.ToString("MMM dd, yyyy")</div><small class="text-muted"><i class="fa-regular fa-clock me-1"></i>@a.AppointmentDate.ToString("HH:mm")</small></td>
+                            <td><div class="fw-semibold">@a.DoctorName</div><small class="text-muted">@a.Reason</small></td>
+                            <td><span class="badge @(a.Status == AppointmentStatus.Confirmed ? "badge-confirmed" : "badge-scheduled")">@a.Status</span></td>
+                        </tr>
+                    }
+                    </tbody></table>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-5 d-flex flex-column gap-4">
+        <div class="card">
+            <div class="card-header"><h5><i class="fa-solid fa-id-card me-2"></i>My Profile</h5><a asp-action="Profile" class="btn btn-sm btn-outline-secondary">Edit</a></div>
+            <div class="card-body">
+                <div class="d-flex align-items-center gap-3 mb-3">
+                    <div style="width:52px;height:52px;background:linear-gradient(135deg,#0f4c81,#1a7a5e);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:1.1rem;flex-shrink:0">
+                        @Model.CurrentPatient.FirstName[0]@Model.CurrentPatient.LastName[0]
+                    </div>
+                    <div><div class="fw-bold">@Model.CurrentPatient.FullName</div><small class="text-muted">Patient since @Model.CurrentPatient.RegistrationDate.ToString("MMM yyyy")</small></div>
+                </div>
+                <div class="row g-2">
+                    <div class="col-6"><span class="text-muted">Age</span><br><strong>@Model.CurrentPatient.Age years</strong></div>
+                    <div class="col-6"><span class="text-muted">Blood Type</span><br><strong>@Model.CurrentPatient.BloodType</strong></div>
+                    <div class="col-6"><span class="text-muted">Gender</span><br><strong>@Model.CurrentPatient.Gender</strong></div>
+                    <div class="col-6"><span class="text-muted">Status</span><br><span class="badge @(Model.CurrentPatient.IsAdmitted ? "badge-admitted" : "badge-outpatient")">@(Model.CurrentPatient.IsAdmitted ? "Admitted" : "Outpatient")</span></div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header"><h5><i class="fa-solid fa-file-medical me-2"></i>Recent Records</h5><a asp-action="MyRecords" class="btn btn-sm btn-outline-primary">View All</a></div>
+            <div class="card-body p-0">
+                @if (!Model.RecentRecords.Any())
+                { <div class="empty-state" style="padding:1.5rem"><p class="mb-0 text-muted">No medical records yet</p></div> }
+                else
+                {
+                    <table class="table mb-0"><tbody>
+                    @foreach (var r in Model.RecentRecords)
+                    {
+                        <tr><td><div class="fw-semibold" style="font-size:.9rem">@r.Diagnosis</div><small class="text-muted">@r.DoctorName • @r.RecordDate.ToString("MMM dd, yyyy")</small></td></tr>
+                    }
+                    </tbody></table>
+                }
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,106 @@
+@model PatientDetailsViewModel
+@{ ViewData["Title"] = Model.Patient.FullName; ViewData["Page"] = "Patients"; }
+
+<div class="page-header">
+    <h2><i class="fa-solid fa-user me-2"></i>@Model.Patient.FullName</h2>
+    <div class="d-flex gap-2">
+        <a asp-action="Edit" asp-route-id="@Model.Patient.Id" class="btn btn-outline-primary">Edit</a>
+        @if (!Model.Patient.IsAdmitted)
+        {
+            <a asp-action="Admit" asp-route-id="@Model.Patient.Id" class="btn btn-success">Admit</a>
+        }
+        else
+        {
+            <form asp-action="Discharge" asp-route-id="@Model.Patient.Id" method="post" style="display:inline">
+                <button class="btn btn-warning" onclick="return confirm('Discharge this patient?')">Discharge</button>
+            </form>
+        }
+        <a asp-action="Index" class="btn btn-outline-secondary">← Back</a>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header"><h5>Patient Information</h5></div>
+            <div class="card-body">
+                <div class="row g-2">
+                    <div class="col-6"><small class="text-muted">Age</small><br><strong>@Model.Patient.Age years</strong></div>
+                    <div class="col-6"><small class="text-muted">Gender</small><br><strong>@Model.Patient.Gender</strong></div>
+                    <div class="col-6"><small class="text-muted">Blood Type</small><br><strong>@Model.Patient.BloodType</strong></div>
+                    <div class="col-6"><small class="text-muted">Status</small><br><span class="badge @(Model.Patient.IsAdmitted ? "badge-admitted" : "badge-outpatient")">@(Model.Patient.IsAdmitted ? "Admitted" : "Outpatient")</span></div>
+                    <div class="col-12"><small class="text-muted">Phone</small><br><strong>@Model.Patient.PhoneNumber</strong></div>
+                    <div class="col-12"><small class="text-muted">Email</small><br><strong>@Model.Patient.Email</strong></div>
+                    <div class="col-12"><small class="text-muted">Address</small><br><strong>@Model.Patient.Address</strong></div>
+                    <div class="col-12"><small class="text-muted">Emergency Contact</small><br><strong>@Model.Patient.EmergencyContactName – @Model.Patient.EmergencyContactPhone</strong></div>
+                    @if (Model.AssignedRoom != null)
+                    {
+                        <div class="col-12"><small class="text-muted">Assigned Room</small><br><strong>Room @Model.AssignedRoom.RoomNumber (@Model.AssignedRoom.Type)</strong></div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-8">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5><i class="fa-solid fa-calendar-check me-2"></i>Appointments (@Model.Appointments.Count)</h5>
+                <a asp-controller="Appointments" asp-action="Create" asp-route-patientId="@Model.Patient.Id" class="btn btn-sm btn-outline-primary">+ Schedule</a>
+            </div>
+            <div class="card-body p-0">
+                @if (!Model.Appointments.Any()) { <div class="empty-state" style="padding:1.5rem"><p class="mb-0 text-muted">No appointments</p></div> }
+                else
+                {
+                    <table class="table table-sm mb-0">
+                        <tbody>
+                        @foreach (var a in Model.Appointments.Take(5))
+                        {
+                            <tr><td>@a.AppointmentDate.ToString("MMM dd, yyyy HH:mm")</td><td>@a.DoctorName</td><td><span class="badge badge-@a.Status.ToString().ToLower()">@a.Status</span></td></tr>
+                        }
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </div>
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5><i class="fa-solid fa-file-medical me-2"></i>Medical Records (@Model.Records.Count)</h5>
+                <a asp-controller="Records" asp-action="Create" asp-route-patientId="@Model.Patient.Id" class="btn btn-sm btn-outline-primary">+ Add Record</a>
+            </div>
+            <div class="card-body p-0">
+                @if (!Model.Records.Any()) { <div class="empty-state" style="padding:1.5rem"><p class="mb-0 text-muted">No records</p></div> }
+                else
+                {
+                    <table class="table table-sm mb-0">
+                        <tbody>
+                        @foreach (var r in Model.Records.Take(5))
+                        {
+                            <tr><td>@r.RecordDate.ToString("MMM dd, yyyy")</td><td>@r.Diagnosis</td><td>@r.DoctorName</td><td><a asp-controller="Records" asp-action="Details" asp-route-id="@r.Id" class="btn btn-xs btn-outline-secondary" style="font-size:.75rem;padding:.2rem .5rem">View</a></td></tr>
+                        }
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fa-solid fa-file-invoice-dollar me-2"></i>Bills (@Model.Bills.Count)</h5>
+                <a asp-controller="Billing" asp-action="Create" asp-route-patientId="@Model.Patient.Id" class="btn btn-sm btn-outline-primary">+ Generate Bill</a>
+            </div>
+            <div class="card-body p-0">
+                @if (!Model.Bills.Any()) { <div class="empty-state" style="padding:1.5rem"><p class="mb-0 text-muted">No bills</p></div> }
+                else
+                {
+                    <table class="table table-sm mb-0">
+                        <tbody>
+                        @foreach (var b in Model.Bills)
+                        {
+                            <tr><td>@b.BillDate.ToString("MMM dd")</td><td>UGX @b.TotalAmount.ToString("N0")</td><td class="@(b.Balance > 0 ? "text-danger" : "text-success")">Bal: UGX @b.Balance.ToString("N0")</td><td><span class="badge @(b.Status == BillStatus.Paid ? "bg-success" : b.Status == BillStatus.Overdue ? "bg-danger" : "bg-warning text-dark")">@b.Status</span></td></tr>
+                        }
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </div>
+    </div>
+</div>

@@ -12,6 +12,7 @@ AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddRazorPages();
+builder.Services.AddControllersWithViews();
 
 // ── Database ──────────────────────────────────────────────────────────────
 builder.Services.AddDbContext<HospitalDbContext>(options =>
@@ -21,9 +22,9 @@ builder.Services.AddDbContext<HospitalDbContext>(options =>
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        options.LoginPath         = "/Auth/Login";
-        options.LogoutPath        = "/Auth/Logout";
-        options.AccessDeniedPath  = "/Auth/AccessDenied";
+        options.LoginPath         = "/Admin/Auth/Login";
+        options.LogoutPath        = "/Admin/Auth/Logout";
+        options.AccessDeniedPath  = "/Admin/Auth/AccessDenied";
         options.ExpireTimeSpan    = TimeSpan.FromHours(8);
         options.SlidingExpiration = true;
         options.Cookie.HttpOnly   = true;
@@ -116,5 +117,11 @@ app.UseAuthorization();
 app.UseAuditLogging();
 
 app.MapRazorPages();
+app.MapControllerRoute(
+    name: "areas",
+    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();

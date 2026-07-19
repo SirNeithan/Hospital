@@ -1,0 +1,76 @@
+@model HomeViewModel
+@{ ViewData["Title"] = "Dashboard"; ViewData["Page"] = "Dashboard"; }
+
+<div class="stat-grid">
+    <div class="stat-card"><div class="stat-icon blue"><i class="fa-solid fa-users"></i></div><div class="stat-info"><div class="stat-value">@Model.TotalPatients</div><div class="stat-label">Total Patients</div></div></div>
+    <div class="stat-card"><div class="stat-icon red"><i class="fa-solid fa-hospital-user"></i></div><div class="stat-info"><div class="stat-value">@Model.AdmittedPatients</div><div class="stat-label">Admitted</div></div></div>
+    <div class="stat-card"><div class="stat-icon teal"><i class="fa-solid fa-user-doctor"></i></div><div class="stat-info"><div class="stat-value">@Model.AvailableDoctors <span style="font-size:1rem;color:#718096">/ @Model.TotalDoctors</span></div><div class="stat-label">Doctors Available</div></div></div>
+    <div class="stat-card"><div class="stat-icon yellow"><i class="fa-solid fa-calendar-check"></i></div><div class="stat-info"><div class="stat-value">@Model.TodayAppointments</div><div class="stat-label">Today's Appointments</div></div></div>
+    <div class="stat-card"><div class="stat-icon purple"><i class="fa-solid fa-bed"></i></div><div class="stat-info"><div class="stat-value">@Model.AvailableRooms <span style="font-size:1rem;color:#718096">/ @Model.TotalRooms</span></div><div class="stat-label">Rooms Available</div></div></div>
+    <div class="stat-card"><div class="stat-icon green"><i class="fa-solid fa-sack-dollar"></i></div><div class="stat-info"><div class="stat-value">UGX @Model.TotalRevenue.ToString("N0")</div><div class="stat-label">Revenue Collected</div></div></div>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-7">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fa-solid fa-calendar-check me-2"></i>Upcoming Appointments</h5>
+                <a asp-controller="Appointments" asp-action="Index" class="btn btn-sm btn-outline-primary">View All</a>
+            </div>
+            <div class="card-body p-0">
+                @if (!Model.UpcomingAppointments.Any())
+                {
+                    <div class="empty-state"><div class="empty-icon"><i class="fa-solid fa-calendar-xmark"></i></div><p>No upcoming appointments</p></div>
+                }
+                else
+                {
+                    <table class="table"><thead><tr><th>Date & Time</th><th>Patient</th><th>Doctor</th><th>Status</th></tr></thead>
+                    <tbody>
+                    @foreach (var a in Model.UpcomingAppointments)
+                    {
+                        <tr>
+                            <td><div class="fw-semibold">@a.AppointmentDate.ToString("MMM dd")</div><small class="text-muted">@a.AppointmentDate.ToString("HH:mm")</small></td>
+                            <td>@a.PatientName</td>
+                            <td><small class="text-muted">@a.DoctorName</small></td>
+                            <td><span class="badge @(a.Status == AppointmentStatus.Confirmed ? "badge-confirmed" : a.Status == AppointmentStatus.Completed ? "badge-completed" : "badge-scheduled")">@a.Status</span></td>
+                        </tr>
+                    }
+                    </tbody></table>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-5">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5><i class="fa-solid fa-users me-2"></i>Recent Patients</h5>
+                <a asp-controller="Patients" asp-action="Index" class="btn btn-sm btn-outline-primary">View All</a>
+            </div>
+            <div class="card-body p-0">
+                <table class="table"><tbody>
+                @foreach (var p in Model.RecentPatients)
+                {
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center gap-2">
+                                <div class="avatar" style="font-size:.7rem">@p.FirstName[0]@p.LastName[0]</div>
+                                <div><div class="fw-semibold">@p.FullName</div><small class="text-muted">@p.PhoneNumber</small></div>
+                            </div>
+                        </td>
+                        <td><span class="badge @(p.IsAdmitted ? "badge-admitted" : "badge-outpatient")">@(p.IsAdmitted ? "Admitted" : "Outpatient")</span></td>
+                    </tr>
+                }
+                </tbody></table>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header"><h5><i class="fa-solid fa-file-invoice-dollar me-2"></i>Financial Snapshot</h5></div>
+            <div class="card-body">
+                <div class="d-flex justify-content-between mb-3"><span class="text-muted">Total Revenue</span><span class="fw-semibold text-success">UGX @Model.TotalRevenue.ToString("N2")</span></div>
+                <div class="d-flex justify-content-between mb-3"><span class="text-muted">Outstanding</span><span class="fw-semibold text-warning">UGX @Model.Outstanding.ToString("N2")</span></div>
+                <div class="d-flex justify-content-between"><span class="text-muted">Unpaid Bills</span><span class="fw-semibold text-danger">@Model.UnpaidBills</span></div>
+                <a asp-controller="Billing" asp-action="Index" class="btn btn-primary btn-sm mt-3 w-100">Go to Billing</a>
+            </div>
+        </div>
+    </div>
+</div>

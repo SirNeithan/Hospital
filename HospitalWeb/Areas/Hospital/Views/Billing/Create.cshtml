@@ -1,0 +1,70 @@
+@{ ViewData["Title"] = "Generate Bill"; ViewData["Page"] = "Billing"; }
+
+<div class="page-header">
+    <h2><i class="fa-solid fa-file-invoice-dollar me-2"></i>Generate Bill</h2>
+    <a asp-action="Index" class="btn btn-outline-secondary">← Back</a>
+</div>
+
+@if (ViewBag.ErrorMessage != null)
+{ <div class="alert alert-danger">@ViewBag.ErrorMessage</div> }
+
+<div class="card">
+    <div class="card-body">
+        <form asp-action="Create" method="post">
+            <div class="row g-3 mb-4">
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold">Patient *</label>
+                    <select name="patientId" class="form-select">
+                        <option value="0">— Select patient —</option>
+                        @foreach (var p in (List<Patient>)ViewBag.Patients)
+                        { <option value="@p.Id" selected="@((int)ViewBag.PatientId == p.Id)">@p.FullName</option> }
+                    </select>
+                </div>
+                <div class="col-md-4"><label class="form-label fw-semibold">Insurance Provider</label><input name="insuranceProvider" class="form-control" /></div>
+                <div class="col-md-2"><label class="form-label fw-semibold">Policy Number</label><input name="insurancePolicyNumber" class="form-control" /></div>
+                <div class="col-md-2"><label class="form-label fw-semibold">Coverage (UGX)</label><input name="insuranceCoverage" type="number" class="form-control" value="0" /></div>
+            </div>
+
+            <h6 class="fw-bold mb-3">Bill Items</h6>
+            <div id="items-container">
+                <div class="row g-2 mb-2 item-row">
+                    <div class="col-md-5"><input type="text" class="form-control item-desc" placeholder="Description" /></div>
+                    <div class="col-md-2"><input type="number" class="form-control item-qty" placeholder="Qty" value="1" min="1" /></div>
+                    <div class="col-md-3"><input type="number" class="form-control item-price" placeholder="Unit Price (UGX)" min="0" /></div>
+                    <div class="col-md-2"><button type="button" class="btn btn-outline-danger w-100 remove-row">Remove</button></div>
+                </div>
+            </div>
+            <button type="button" id="add-item" class="btn btn-outline-secondary btn-sm mt-2">+ Add Item</button>
+            <input type="hidden" name="itemsJson" id="itemsJson" />
+
+            <div class="mt-4 d-flex gap-2">
+                <button type="submit" class="btn btn-primary" onclick="buildJson()">Generate Bill</button>
+                <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+document.getElementById('add-item').addEventListener('click', () => {
+    const row = document.querySelector('.item-row').cloneNode(true);
+    row.querySelectorAll('input').forEach(i => i.value = i.type === 'number' ? (i.classList.contains('item-qty') ? 1 : '') : '');
+    document.getElementById('items-container').appendChild(row);
+});
+document.getElementById('items-container').addEventListener('click', e => {
+    if (e.target.classList.contains('remove-row') &&
+        document.querySelectorAll('.item-row').length > 1) e.target.closest('.item-row').remove();
+});
+function buildJson() {
+    const items = [];
+    document.querySelectorAll('.item-row').forEach(row => {
+        const desc  = row.querySelector('.item-desc').value.trim();
+        const qty   = parseInt(row.querySelector('.item-qty').value) || 1;
+        const price = parseFloat(row.querySelector('.item-price').value) || 0;
+        if (desc) items.push({ Description: desc, Quantity: qty, UnitPrice: price });
+    });
+    document.getElementById('itemsJson').value = JSON.stringify(items);
+}
+</script>
+}

@@ -1,0 +1,68 @@
+@model List<Doctor>
+@{ ViewData["Title"] = "Our Doctors"; ViewData["Page"] = "PatientDashboard"; }
+
+<div class="page-header">
+    <h2><i class="fa-solid fa-user-doctor me-2"></i>Our Doctors</h2>
+    <a asp-action="Index" class="btn btn-outline-secondary">← Dashboard</a>
+</div>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <form method="get" class="row g-3 align-items-end">
+            <div class="col-md-4">
+                <label class="form-label fw-semibold">Search by Name</label>
+                <input type="text" name="search" value="@ViewBag.Search" class="form-control" placeholder="Doctor name…" />
+            </div>
+            <div class="col-md-4">
+                <label class="form-label fw-semibold">Specialization</label>
+                <select name="specialization" class="form-select">
+                    <option value="">All Specializations</option>
+                    @foreach (var s in (string[])ViewBag.Specializations)
+                    {
+                        <option value="@s" selected="@(ViewBag.Specialization == s)">@s</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-4">
+                <button class="btn btn-primary me-2">Filter</button>
+                @if (ViewBag.Search != null || ViewBag.Specialization != null)
+                { <a asp-action="Doctors" class="btn btn-outline-secondary">Clear</a> }
+            </div>
+        </form>
+    </div>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="card"><div class="empty-state"><div class="empty-icon"><i class="fa-solid fa-user-slash"></i></div><p>No doctors found.</p></div></div>
+}
+else
+{
+    <div class="row g-4">
+    @foreach (var d in Model)
+    {
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                        <div style="width:52px;height:52px;background:linear-gradient(135deg,#0f4c81,#1a7a5e);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:1.1rem;flex-shrink:0">
+                            @d.FirstName[0]@d.LastName[0]
+                        </div>
+                        <div><div class="fw-bold">@d.FullName</div><span class="badge bg-light text-dark border">@d.Specialization</span></div>
+                    </div>
+                    <div class="row g-2 mb-3" style="font-size:.875rem">
+                        <div class="col-12"><i class="fa-regular fa-calendar me-2 text-muted"></i>@string.Join(", ", d.AvailableDays.Select(x => x.ToString()[..3]))</div>
+                        <div class="col-12"><i class="fa-regular fa-clock me-2 text-muted"></i>@d.WorkStartTime.ToString(@"hh\:mm") – @d.WorkEndTime.ToString(@"hh\:mm")</div>
+                        <div class="col-12"><i class="fa-solid fa-sack-dollar me-2 text-muted"></i>UGX @d.ConsultationFee.ToString("N0") per visit</div>
+                        @if (!string.IsNullOrEmpty(d.PhoneNumber))
+                        { <div class="col-12"><i class="fa-solid fa-phone me-2 text-muted"></i>@d.PhoneNumber</div> }
+                    </div>
+                    <a asp-action="BookAppointment" asp-route-doctorId="@d.Id" class="btn btn-primary btn-sm w-100">
+                        <i class="fa-solid fa-calendar-plus me-2"></i>Book Appointment
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+    </div>
+}

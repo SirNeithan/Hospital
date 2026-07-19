@@ -1,0 +1,60 @@
+@model MedicalRecord
+@{ ViewData["Title"] = "Medical Record"; ViewData["Page"] = "Records"; }
+
+<div class="page-header">
+    <h2><i class="fa-solid fa-file-medical me-2"></i>Record #@Model.Id</h2>
+    <a asp-action="Index" class="btn btn-outline-secondary">← Back</a>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-8">
+        <div class="card mb-4">
+            <div class="card-header"><h5>Clinical Details</h5></div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-6"><small class="text-muted text-uppercase fw-semibold" style="font-size:.75rem">Diagnosis</small><p>@Model.Diagnosis</p></div>
+                    <div class="col-md-6"><small class="text-muted text-uppercase fw-semibold" style="font-size:.75rem">Symptoms</small><p>@Model.Symptoms</p></div>
+                    <div class="col-12"><small class="text-muted text-uppercase fw-semibold" style="font-size:.75rem">Treatment Plan</small><p>@Model.TreatmentPlan</p></div>
+                    @if (!string.IsNullOrEmpty(Model.LabResults))
+                    { <div class="col-12"><small class="text-muted text-uppercase fw-semibold" style="font-size:.75rem">Lab Results</small><p>@Model.LabResults</p></div> }
+                    @if (!string.IsNullOrEmpty(Model.Allergies))
+                    { <div class="col-12"><small class="text-muted text-uppercase fw-semibold" style="font-size:.75rem">Allergies</small><p class="text-danger">@Model.Allergies</p></div> }
+                    @if (!string.IsNullOrEmpty(Model.Notes))
+                    { <div class="col-12"><small class="text-muted text-uppercase fw-semibold" style="font-size:.75rem">Notes</small><p>@Model.Notes</p></div> }
+                </div>
+            </div>
+        </div>
+
+        @if (Model.Prescriptions.Any())
+        {
+            <div class="card">
+                <div class="card-header"><h5><i class="fa-solid fa-pills me-2"></i>Prescriptions</h5></div>
+                <div class="card-body p-0">
+                    <table class="table mb-0">
+                        <thead class="table-light"><tr><th>Medicine</th><th>Dosage</th><th>Frequency</th><th>Duration</th><th>Instructions</th></tr></thead>
+                        <tbody>
+                        @foreach (var p in Model.Prescriptions)
+                        {
+                            <tr><td class="fw-semibold">@p.MedicineName</td><td>@p.Dosage</td><td>@p.Frequency</td><td>@p.DurationDays days</td><td><small class="text-muted">@p.Instructions</small></td></tr>
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header"><h5>Record Info</h5></div>
+            <div class="card-body">
+                <div class="row g-2">
+                    <div class="col-12"><small class="text-muted">Patient</small><br><strong>@Model.PatientName</strong></div>
+                    <div class="col-12"><small class="text-muted">Doctor</small><br><strong>@Model.DoctorName</strong></div>
+                    <div class="col-12"><small class="text-muted">Record Date</small><br><strong>@Model.RecordDate.ToString("MMMM dd, yyyy")</strong></div>
+                    @if (Model.AppointmentId.HasValue)
+                    { <div class="col-12"><small class="text-muted">Appointment ID</small><br><strong>#@Model.AppointmentId</strong></div> }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

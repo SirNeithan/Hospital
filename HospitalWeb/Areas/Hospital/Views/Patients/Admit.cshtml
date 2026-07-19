@@ -1,0 +1,29 @@
+@model AdmitPatientViewModel
+@{ ViewData["Title"] = "Admit Patient"; ViewData["Page"] = "Patients"; }
+
+<div class="page-header">
+    <h2><i class="fa-solid fa-bed me-2"></i>Admit @Model.Patient.FullName</h2>
+    <a asp-action="Details" asp-route-id="@Model.Patient.Id" class="btn btn-outline-secondary">← Back</a>
+</div>
+
+<div class="card" style="max-width:480px">
+    <div class="card-body">
+        <form asp-action="Admit" asp-route-id="@Model.Patient.Id" method="post">
+            <div class="mb-4">
+                <label asp-for="RoomId" class="form-label fw-semibold">Select Room *</label>
+                <select asp-for="RoomId" class="form-select">
+                    <option value="0">— Choose a room —</option>
+                    @foreach (var r in Model.AvailableRooms)
+                    {
+                        <option value="@r.Id">Room @r.RoomNumber — @r.Type (@r.CurrentOccupancy/@r.Capacity) — UGX @r.DailyRate.ToString("N0")/day</option>
+                    }
+                </select>
+                <span asp-validation-for="RoomId" class="text-danger small"></span>
+            </div>
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-success">Confirm Admission</button>
+                <a asp-action="Details" asp-route-id="@Model.Patient.Id" class="btn btn-outline-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>

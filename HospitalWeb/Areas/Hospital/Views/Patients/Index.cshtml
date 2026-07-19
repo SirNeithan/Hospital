@@ -1,0 +1,59 @@
+@model PatientListViewModel
+@{ ViewData["Title"] = "Patients"; ViewData["Page"] = "Patients"; }
+
+<div class="page-header">
+    <h2><i class="fa-solid fa-users me-2"></i>Patients</h2>
+    <a asp-action="Create" class="btn btn-primary">+ Register Patient</a>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <form method="get" class="d-flex gap-2" style="flex:1">
+            <input type="text" name="search" value="@Model.Search" class="form-control"
+                   placeholder="Search by name, phone or email…" style="max-width:340px" />
+            <button class="btn btn-outline-primary btn-sm">Search</button>
+            @if (!string.IsNullOrEmpty(Model.Search))
+            {
+                <a asp-action="Index" class="btn btn-outline-secondary btn-sm">Clear</a>
+            }
+        </form>
+        <small class="text-muted">@Model.Patients.TotalCount patient(s)</small>
+    </div>
+    <div class="card-body p-0">
+        @if (!Model.Patients.Items.Any())
+        {
+            <div class="empty-state"><div class="empty-icon"><i class="fa-solid fa-user-slash"></i></div><p>No patients found</p></div>
+        }
+        else
+        {
+            <table class="table">
+                <thead><tr><th>Patient</th><th>Age / Gender</th><th>Blood Type</th><th>Phone</th><th>Status</th><th>Registered</th><th></th></tr></thead>
+                <tbody>
+                @foreach (var p in Model.Patients.Items)
+                {
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center gap-2">
+                                <div class="avatar" style="font-size:.7rem">@p.FirstName[0]@p.LastName[0]</div>
+                                <div><div class="fw-semibold">@p.FullName</div><small class="text-muted">@p.Email</small></div>
+                            </div>
+                        </td>
+                        <td>@p.Age yrs / @p.Gender</td>
+                        <td><span class="badge bg-light text-dark border">@p.BloodType</span></td>
+                        <td>@p.PhoneNumber</td>
+                        <td><span class="badge @(p.IsAdmitted ? "badge-admitted" : "badge-outpatient")">@(p.IsAdmitted ? "Admitted" : "Outpatient")</span></td>
+                        <td><small class="text-muted">@p.RegistrationDate.ToString("MMM dd, yyyy")</small></td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@p.Id" class="btn btn-sm btn-outline-secondary">View</a>
+                            <a asp-action="Edit" asp-route-id="@p.Id" class="btn btn-sm btn-outline-primary">Edit</a>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+            <div class="px-3 border-top">
+                @await Component.InvokeAsync("Pagination", new { result = Model.Patients })
+            </div>
+        }
+    </div>
+</div>
